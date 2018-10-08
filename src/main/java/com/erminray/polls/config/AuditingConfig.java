@@ -1,4 +1,4 @@
-package com.erminray.polls.model.config;
+package com.erminray.polls.config;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
