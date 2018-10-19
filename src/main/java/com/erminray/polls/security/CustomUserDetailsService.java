@@ -10,6 +10,8 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+
+//UserDetailsService is an external interface that provides service about prompt upon login attempt(Eg. User name not valid)
 @Service
 public class CustomUserDetailsService implements UserDetailsService {
 
