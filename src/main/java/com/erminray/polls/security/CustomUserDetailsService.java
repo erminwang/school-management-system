@@ -16,6 +16,7 @@ public class CustomUserDetailsService implements UserDetailsService {
     @Autowired
     UserRepository userRepository;
 
+    // This method is used by AuthenticationManager
     @Override
     @Transactional
     public UserDetails loadUserByUsername(String usernameOrEmail)
