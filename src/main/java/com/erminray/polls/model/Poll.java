@@ -23,13 +23,16 @@ public class Poll extends UserDateAudit {
     @Size(max = 140)
     private String question;
 
+    //mappedBy is required and refers to the associated attribute in the many table
     @OneToMany(
         mappedBy = "poll",
         cascade = CascadeType.ALL,
         fetch = FetchType.EAGER,
+        //when set choice to null or to another Address object -> disconnecting relationship, this will remove the choice objects
         orphanRemoval = true
     )
     @Size(min = 2, max = 6)
+//    Lazy load all the collections and entities
     @Fetch(FetchMode.SELECT)
     @BatchSize(size = 30)
     private List<Choice> choices = new ArrayList<>();

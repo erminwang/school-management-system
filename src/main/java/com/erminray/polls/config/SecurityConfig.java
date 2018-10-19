@@ -20,7 +20,9 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 @Configuration
+//primary spring security annotation that is used to enable web security in a project
 @EnableWebSecurity
+//enable method level security based on annotations -> 设置method权限
 @EnableGlobalMethodSecurity(
     securedEnabled = true,
     jsr250Enabled = true,

@@ -17,6 +17,7 @@ public class Choice {
     private String text;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    //@ Joincolumn is optional. Here it's just used to define the name of the additional column
     @JoinColumn(name = "poll_id", nullable = false)
     private Poll poll;
 
