@@ -8,7 +8,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Component;
 import java.util.Date;
 
-@Component
+@Component   // A custom bean need to be annotated with @Component
 public class JwtTokenProvider {
 
     private static final Logger logger = LoggerFactory.getLogger(JwtTokenProvider.class);
@@ -34,6 +34,7 @@ public class JwtTokenProvider {
             .compact();
     }
 
+    // get the corresponding user id from JWT token, the user id was set inside the token with "generateToken" method
     public Long getUserIdFromJWT(String token) {
         Claims claims = Jwts.parser()
             .setSigningKey(jwtSecret)

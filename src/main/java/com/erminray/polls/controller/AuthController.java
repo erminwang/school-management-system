@@ -51,6 +51,10 @@ public class AuthController {
     @PostMapping("/signin")
     public ResponseEntity<?> authenticateUser(@Valid @RequestBody LoginRequest loginRequest) {
 
+        /**
+         * AuthenticationManager uses userDetailsService to get the user based on username and
+         * compare that user's password with the one in the authentication token
+         */
         Authentication authentication = authenticationManager.authenticate(
             new UsernamePasswordAuthenticationToken(
                 loginRequest.getUsernameOrEmail(),
@@ -58,6 +62,7 @@ public class AuthController {
             )
         );
 
+        // Store user info into HttpSession
         SecurityContextHolder.getContext().setAuthentication(authentication);
 
         String jwt = tokenProvider.generateToken(authentication);
@@ -93,6 +98,7 @@ public class AuthController {
             .fromCurrentContextPath().path("/api/users/{username}")
             .buildAndExpand(result.getUsername()).toUri();
 
+        // "created" returns response with 201 status code
         return ResponseEntity.created(location).body(new ApiResponse(true, "User registered successfully"));
     }
 }
