@@ -1,0 +1,3 @@
+@Entity annotation: defines that a class can be mapped to a table, it's mandatory.
+(https://stackoverflow.com/questions/29332907/what-is-the-exact-meaning-of-the-jpa-entity-annotation)
+
