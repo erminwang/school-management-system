@@ -4,6 +4,9 @@ import com.erminray.polls.exception.AppException;
 import com.erminray.polls.model.Role;
 import com.erminray.polls.model.RoleName;
 import com.erminray.polls.model.User;
+import com.erminray.polls.model.user.Administrator;
+import com.erminray.polls.model.user.Instructor;
+import com.erminray.polls.model.user.Student;
 import com.erminray.polls.payload.ApiResponse;
 import com.erminray.polls.payload.JwtAuthenticationResponse;
 import com.erminray.polls.payload.LoginRequest;
@@ -81,11 +84,33 @@ public class AuthController {
                 HttpStatus.BAD_REQUEST);
         }
 
-        // Creating user's account
-        User user = new User(signUpRequest.getName(), signUpRequest.getUsername(),
-            signUpRequest.getEmail(), signUpRequest.getPassword());
 
-        user.setPassword(passwordEncoder.encode(user.getPassword()));
+
+        // Creating user's account
+        User user = null;
+        switch(signUpRequest.getUserType()) {
+            case "student":
+                user = new Student(signUpRequest.getFirstName(), signUpRequest.getLastName(), signUpRequest.getGender(), signUpRequest.getUsername(),
+                        signUpRequest.getEmail(), passwordEncoder.encode(signUpRequest.getPassword()), signUpRequest.getTypeStu());
+                break;
+
+            case "instructor":
+                user = new Instructor(signUpRequest.getFirstName(), signUpRequest.getLastName(), signUpRequest.getGender(), signUpRequest.getUsername(),
+                        signUpRequest.getEmail(), passwordEncoder.encode(signUpRequest.getPassword()), signUpRequest.getTypeInst());
+                break;
+
+            case "admin":
+                user = new Administrator(signUpRequest.getFirstName(), signUpRequest.getLastName(), signUpRequest.getGender(), signUpRequest.getUsername(),
+                        signUpRequest.getEmail(), passwordEncoder.encode(signUpRequest.getPassword()), signUpRequest.getTypeAdmin());
+                break;
+
+            default:
+                return new ResponseEntity(new ApiResponse(false, "User type was not specified!"),
+                        HttpStatus.BAD_REQUEST);
+        }
+
+
+//        user.setPassword(passwordEncoder.encode(user.getPassword()));
 
         Role userRole = roleRepository.findByName(RoleName.ROLE_USER)
             .orElseThrow(() -> new AppException("User Role not set."));
