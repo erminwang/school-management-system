@@ -5,6 +5,7 @@ import com.erminray.polls.model.Role;
 import com.erminray.polls.model.RoleName;
 import com.erminray.polls.model.User;
 import com.erminray.polls.model.user.Administrator;
+import com.erminray.polls.model.user.Gender;
 import com.erminray.polls.model.user.Instructor;
 import com.erminray.polls.model.user.Student;
 import com.erminray.polls.payload.ApiResponse;
@@ -33,6 +34,7 @@ import javax.validation.Valid;
 import java.net.URI;
 import java.util.Collections;
 import java.util.HashSet;
+import java.util.Random;
 import java.util.Set;
 
 @RestController
@@ -53,6 +55,8 @@ public class AuthController {
 
     @Autowired
     JwtTokenProvider tokenProvider;
+
+    private Random random = new Random();
 
     @PostMapping("/signin")
     public ResponseEntity<?> authenticateUser(@Valid @RequestBody LoginRequest loginRequest) {
@@ -86,8 +90,6 @@ public class AuthController {
             return new ResponseEntity(new ApiResponse(false, "Email Address already in use!"),
                 HttpStatus.BAD_REQUEST);
         }
-
-
 
         // Creating user's account
         User user = null;
@@ -137,5 +139,72 @@ public class AuthController {
 
         // "created" returns response with 201 status code
         return ResponseEntity.created(location).body(new ApiResponse(true, "User registered successfully"));
+    }
+
+    @PostMapping("/populate/examples")
+    public ResponseEntity<?> populateExampleUsers() {
+        int studentNum = 200;
+        int instructorNum = 25;
+        int adminNum = 3;
+
+        Gender[] genders = Gender.values();
+        int gendersLen = genders.length;
+
+        Role userRole = roleRepository.findByName(RoleName.ROLE_USER).get();
+        Role stuRole = roleRepository.findByName(RoleName.ROLE_STUDENT).get();
+        Role instRole = roleRepository.findByName(RoleName.ROLE_INSTRUCTOR).get();
+        Role adminRole = roleRepository.findByName(RoleName.ROLE_ADMIN).get();
+
+        for(int i = 0; i < studentNum; i++) {
+            User student = new Student(generateRandomName(), generateRandomName(),
+                    genders[random.nextInt(gendersLen)].toString(), "stu" + i, "stu" + i + "@sfu.ca",
+                    passwordEncoder.encode("password"), "ts");
+            Set<Role> roles = new HashSet<>();
+            roles.add(userRole);
+            roles.add(stuRole);
+            student.setRoles(roles);
+            userRepository.save(student);
+        }
+
+        for(int i = 0; i < instructorNum; i++) {
+            User instructor = new Instructor(generateRandomName(), generateRandomName(),
+                    genders[random.nextInt(gendersLen)].toString(), "inst" + i, "inst" + i + "@sfu.ca",
+                    passwordEncoder.encode("password"), "ti");
+            Set<Role> roles = new HashSet<>();
+            roles.add(userRole);
+            roles.add(instRole);
+            instructor.setRoles(roles);
+            userRepository.save(instructor);
+        }
+
+        for(int i = 0; i < adminNum; i++) {
+            User administrator = new Administrator(generateRandomName(), generateRandomName(),
+                    genders[random.nextInt(gendersLen)].toString(), "admin" + i, "admin" + i + "@sfu.ca",
+                    passwordEncoder.encode("password"), "ta");
+            Set<Role> roles = new HashSet<>();
+            roles.add(userRole);
+            roles.add(adminRole);
+            administrator.setRoles(roles);
+            userRepository.save(administrator);
+        }
+
+        return new ResponseEntity<String>("Successfully Created", HttpStatus.CREATED);
+    }
+
+    private String generateRandomName() {
+        String chars = "abcdefghijklmnopqrstuvwxyz";
+        int charsLen = chars.length();
+
+        StringBuilder sb = new StringBuilder(
+                Character.toUpperCase(
+                        chars.charAt(random.nextInt(charsLen))
+                )
+        );
+
+        for(int i = 0; i < 6; i++) {
+            sb.append(chars.charAt(random.nextInt(charsLen)));
+        }
+
+        return sb.toString();
     }
 }
