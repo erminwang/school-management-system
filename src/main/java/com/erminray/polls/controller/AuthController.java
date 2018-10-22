@@ -196,8 +196,10 @@ public class AuthController {
         int charsLen = chars.length();
 
         StringBuilder sb = new StringBuilder(
-                Character.toUpperCase(
-                        chars.charAt(random.nextInt(charsLen))
+                Character.toString(
+                    Character.toUpperCase(
+                           chars.charAt(random.nextInt(charsLen))
+                    )
                 )
         );
 
