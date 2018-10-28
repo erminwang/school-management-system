@@ -59,7 +59,10 @@ class LoginForm extends Component {
             <Form onSubmit={this.handleSubmit} className="login-form">
                 <FormItem>
                     {getFieldDecorator('usernameOrEmail', {
-                        rules: [{ required: true, message: 'Please input your username or email!' }],
+                        rules: [
+                            { required: true, message: 'Please input your username or email!' },
+                            {whitespace: true, message: 'Username and Email cannot be empty'}
+                        ]
                     })(
                     <Input 
                         prefix={<Icon type="user" />}
@@ -69,20 +72,19 @@ class LoginForm extends Component {
                     )}
                 </FormItem>
                 <FormItem>
-                {getFieldDecorator('password', {
-                    rules: [{ required: true, message: 'Please input your Password!' }],
-                })(
-                    <Input 
-                        prefix={<Icon type="lock" />}
-                        size="large"
-                        name="password" 
-                        type="password" 
-                        placeholder="Password"  />                        
-                )}
+                    {getFieldDecorator('password', {
+                        rules: [{ required: true, message: 'Please input your Password!' }],
+                    })(
+                        <Input 
+                            prefix={<Icon type="lock" />}
+                            size="large"
+                            name="password" 
+                            type="password" 
+                            placeholder="Password"  />                        
+                    )}
                 </FormItem>
                 <FormItem>
                     <Button type="primary" htmlType="submit" size="large" className="login-form-button">Login</Button>
-                    Or <Link to="/signup">register now!</Link>
                 </FormItem>
             </Form>
         );

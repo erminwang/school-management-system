@@ -82,8 +82,8 @@ class Profile extends Component {
                         <div className="user-profile">
                             <div className="user-details">
                                 <div className="user-avatar">
-                                    <Avatar className="user-avatar-circle" style={{ backgroundColor: getAvatarColor(this.state.user.name)}}>
-                                        {this.state.user.name[0].toUpperCase()}
+                                    <Avatar className="user-avatar-circle" style={{ backgroundColor: getAvatarColor(this.state.user.firstName + this.state.user.lastName)}}>
+                                        {this.state.user.firstName[0].toUpperCase() + this.state.user.lastName[0].toUpperCase()}
                                     </Avatar>
                                 </div>
                                 <div className="user-summary">
