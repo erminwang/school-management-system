@@ -1,17 +1,31 @@
 package com.erminray.polls.model.user;
 
 import com.erminray.polls.model.User;
+import com.erminray.polls.model.system.Course;
+import com.erminray.polls.model.system.CourseResult;
+import com.erminray.polls.model.system.Department;
+import org.hibernate.annotations.Fetch;
 
-import javax.persistence.Entity;
-import javax.persistence.Table;
+import javax.persistence.*;
+import java.util.Set;
 
 @Entity
 @Table(name = "students")
 public class Student extends User {
     private String typeStu;
+
+//    @ManyToMany
 //    private Set<Course> currentCourses;
-//    private Set<CourseResult> coursesTaken;
-//    private Department department;
+
+    @OneToMany(
+        mappedBy = "student",
+        cascade = CascadeType.ALL,
+        orphanRemoval = true
+    )
+    private Set<CourseResult> coursesTaken;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    private Department department;
 
     public Student() {
 

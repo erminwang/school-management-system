@@ -3,15 +3,15 @@ package com.erminray.polls.model.user;
 import com.erminray.polls.model.User;
 
 import javax.persistence.Entity;
+import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 
 @Entity
 @Table(name = "instructors")
 public class Instructor extends User {
     private String typeInst;
-//    private Set<Deparment> deparments;
-//    private Set<course> coursesOwned;
 
+//    private Set<course> coursesOwned;
     public Instructor() {
 
     }
