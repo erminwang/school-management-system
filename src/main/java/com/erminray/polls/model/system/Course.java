@@ -1,7 +1,6 @@
 package com.erminray.polls.model.system;
 
 import com.erminray.polls.model.user.Instructor;
-import org.hibernate.annotations.NaturalId;
 
 import javax.persistence.*;
 import javax.validation.constraints.Max;
@@ -37,8 +36,9 @@ public class Course {
     private int waitlistSize;
 
     @NotBlank
-    @Size(max = 15)
-    private String semester;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "semester_name")
+    private Semester semester;
 
     @NotBlank
     @ElementCollection
@@ -46,7 +46,7 @@ public class Course {
     @Column(name="schedule")
     private List<String> schedule;
 
-    public Course(@Max(1000) @Min(0) int courseSize, @Max(60) @Min(0) int waitlistSize, @NotBlank @Size(max = 15) String semester, @NotBlank List<String> schedule) {
+    public Course(@Max(1000) @Min(0) int courseSize, @Max(60) @Min(0) int waitlistSize, @NotBlank @Size(max = 15) Semester semester, @NotBlank List<String> schedule) {
         this.courseSize = courseSize;
         this.waitlistSize = waitlistSize;
         this.semester = semester;
@@ -77,11 +77,11 @@ public class Course {
         this.waitlistSize = waitlistSize;
     }
 
-    public String getSemester() {
+    public Semester getSemester() {
         return semester;
     }
 
-    public void setSemester(String semester) {
+    public void setSemester(Semester semester) {
         this.semester = semester;
     }
 
