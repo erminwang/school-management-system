@@ -11,21 +11,18 @@ import java.util.Set;
 @Table(name = "departments")
 public class Department {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    @Size(max = 30)
+    private String shortName;
 
     @NotBlank
     @Size(max = 60)
     private String fullName;
 
-    @NotBlank
-    @Size(max = 30)
-    private String shortName;
 
-    @NotBlank
+
     @ManyToMany
     @JoinTable(name = "department_instructors",
-        joinColumns = @JoinColumn(name = "department_id"),
+        joinColumns = @JoinColumn(name = "department_name"),
         inverseJoinColumns = @JoinColumn(name = "instructor_id"))
     private Set<Instructor> instructors;
 
@@ -48,12 +45,9 @@ public class Department {
 
     }
 
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
+    public Department(@NotBlank @Size(max = 60) String fullName, @NotBlank @Size(max = 30) String shortName) {
+        this.fullName = fullName;
+        this.shortName = shortName;
     }
 
     public String getFullName() {

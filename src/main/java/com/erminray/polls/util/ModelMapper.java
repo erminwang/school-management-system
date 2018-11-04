@@ -1,7 +1,7 @@
 package com.erminray.polls.util;
 
 import com.erminray.polls.model.Poll;
-import com.erminray.polls.model.User;
+import com.erminray.polls.model.user.User;
 import com.erminray.polls.payload.ChoiceResponse;
 import com.erminray.polls.payload.PollResponse;
 import com.erminray.polls.payload.UserSummary;

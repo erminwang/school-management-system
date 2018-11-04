@@ -2,9 +2,9 @@ package com.erminray.polls.controller;
 
 import com.erminray.polls.model.*;
 import com.erminray.polls.payload.*;
-import com.erminray.polls.repository.PollRepository;
-import com.erminray.polls.repository.UserRepository;
-import com.erminray.polls.repository.VoteRepository;
+import com.erminray.polls.repository.old.PollRepository;
+import com.erminray.polls.repository.old.UserRepository;
+import com.erminray.polls.repository.old.VoteRepository;
 import com.erminray.polls.security.CurrentUser;
 import com.erminray.polls.security.UserPrincipal;
 import com.erminray.polls.service.PollService;

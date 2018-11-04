@@ -1,8 +1,5 @@
 package com.erminray.polls.model.user;
 
-import com.erminray.polls.model.User;
-import org.springframework.boot.autoconfigure.kafka.KafkaProperties;
-
 import javax.persistence.Entity;
 import javax.persistence.Table;
 
