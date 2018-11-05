@@ -1,7 +1,7 @@
 package com.erminray.polls.util;
 
 import com.erminray.polls.model.Poll;
-import com.erminray.polls.model.User;
+import com.erminray.polls.model.user.User;
 import com.erminray.polls.payload.ChoiceResponse;
 import com.erminray.polls.payload.PollResponse;
 import com.erminray.polls.payload.UserSummary;
@@ -36,7 +36,7 @@ public class ModelMapper {
         }).collect(Collectors.toList());
 
         pollResponse.setChoices(choiceResponses);
-        UserSummary creatorSummary = new UserSummary(creator.getId(), creator.getUsername(), creator.getName());
+        UserSummary creatorSummary = new UserSummary(creator.getId(), creator.getUsername(), creator.getFirstName() + creator.getLastName(), "UNKNOWN_USER");
         pollResponse.setCreatedBy(creatorSummary);
 
         if(userVote != null) {

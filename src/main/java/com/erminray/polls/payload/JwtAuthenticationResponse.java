@@ -2,10 +2,12 @@ package com.erminray.polls.payload;
 
 public class JwtAuthenticationResponse {
     private String accessToken;
+    private String userType;
     private String tokenType = "Bearer";
 
-    public JwtAuthenticationResponse(String accessToken) {
+    public JwtAuthenticationResponse(String accessToken, String userType) {
         this.accessToken = accessToken;
+        this.userType = userType;
     }
 
     public String getAccessToken() {
@@ -22,5 +24,13 @@ public class JwtAuthenticationResponse {
 
     public void setTokenType(String tokenType) {
         this.tokenType = tokenType;
+    }
+
+    public String getUserType() {
+        return userType;
+    }
+
+    public void setUserType(String userType) {
+        this.userType = userType;
     }
 }

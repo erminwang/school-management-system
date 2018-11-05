@@ -1,6 +1,8 @@
-package com.erminray.polls.model;
+package com.erminray.polls.model.user;
 
+import com.erminray.polls.model.Role;
 import com.erminray.polls.model.audit.DateAudit;
+import com.erminray.polls.model.user.Gender;
 import org.hibernate.annotations.NaturalId;
 import javax.persistence.*;
 import javax.validation.constraints.Email;
@@ -10,6 +12,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 @Entity
+@Inheritance(strategy = InheritanceType.JOINED)
 @Table(name = "users", uniqueConstraints = {
         @UniqueConstraint(columnNames = {
                 "username"
@@ -25,7 +28,14 @@ public class User extends DateAudit {
 
     @NotBlank
     @Size(max = 40)
-    private String name;
+    private String firstName;
+
+    @NotBlank
+    @Size(max = 40)
+    private String lastName;
+
+    @Enumerated(EnumType.ORDINAL)
+    private Gender gender;
 
     @NotBlank
     @Size(max = 15)
@@ -51,8 +61,14 @@ public class User extends DateAudit {
 
     }
 
-    public User(String name, String username, String email, String password) {
-        this.name = name;
+    public User(String firstName, String lastName, String gender, String username, String email, String password) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+        try {
+            this.gender = Gender.valueOf(gender);
+        } catch (IllegalArgumentException e) {
+            this.gender = Gender.BLANK;
+        }
         this.username = username;
         this.email = email;
         this.password = password;
@@ -74,12 +90,28 @@ public class User extends DateAudit {
         this.username = username;
     }
 
-    public String getName() {
-        return name;
+    public String getFirstName() {
+        return firstName;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
+
+    public String getLastName() {
+        return lastName;
+    }
+
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
+    }
+
+    public Gender getGender() {
+        return gender;
+    }
+
+    public void setGender(Gender gender) {
+        this.gender = gender;
     }
 
     public String getEmail() {

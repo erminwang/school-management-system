@@ -6,29 +6,44 @@ import {
     NAME_MIN_LENGTH, NAME_MAX_LENGTH, 
     USERNAME_MIN_LENGTH, USERNAME_MAX_LENGTH,
     EMAIL_MAX_LENGTH,
-    PASSWORD_MIN_LENGTH, PASSWORD_MAX_LENGTH
+    PASSWORD_MIN_LENGTH, PASSWORD_MAX_LENGTH,
+    GENDER_TYPES,
+    USER_TYPES
 } from '../../constants';
 
-import { Form, Input, Button, notification } from 'antd';
+import { Form, Input, Radio, Button, notification } from 'antd';
 const FormItem = Form.Item;
+const RadioGroup = Radio.Group;
+
+let initialState = {
+    signupCompleted: false,
+    firstName: {
+        value: ''
+    },
+    lastName: {
+        value: ''
+    },
+    username: {
+        value: ''
+    },
+    email: {
+        value: ''
+    },
+    password: {
+        value: ''
+    },
+    gender: {
+        value: ''
+    },
+    userType: {
+        value: ''
+    }
+};
 
 class Signup extends Component {
     constructor(props) {
         super(props);
-        this.state = {
-            name: {
-                value: ''
-            },
-            username: {
-                value: ''
-            },
-            email: {
-                value: ''
-            },
-            password: {
-                value: ''
-            }
-        }
+        this.state = initialState;
         this.handleInputChange = this.handleInputChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
         this.validateUsernameAvailability = this.validateUsernameAvailability.bind(this);
@@ -53,51 +68,98 @@ class Signup extends Component {
         event.preventDefault();
     
         const signupRequest = {
-            name: this.state.name.value,
+            firstName: this.state.firstName.value,
+            lastName: this.state.lastName.value,
             email: this.state.email.value,
             username: this.state.username.value,
-            password: this.state.password.value
+            password: this.state.password.value,
+            gender: this.state.gender.value,
+            userType: this.state.userType.value
         };
         signup(signupRequest)
         .then(response => {
-            notification.success({
-                message: 'Polling App',
-                description: "Thank you! You're successfully registered. Please Login to continue!",
-            });          
-            this.props.history.push("/login");
+            if(response.success) {
+                notification.success({
+                    message: 'College Board',
+                    description: "Success! A new user has been successfully registered.",
+                });  
+                this.setState({
+                    signupCompleted: true
+                });      
+                // this.props.history.push("/login");
+            } else {
+                var error = new Error('Unexpected Error: User not created');
+                error.response = response;
+                throw error;
+            }
         }).catch(error => {
+            console.log(error);
             notification.error({
-                message: 'Polling App',
+                message: 'College Board',
                 description: error.message || 'Sorry! Something went wrong. Please try again!'
             });
         });
     }
 
     isFormInvalid() {
-        return !(this.state.name.validateStatus === 'success' &&
+        return !(this.state.firstName.validateStatus === 'success' &&
+            this.state.lastName.validateStatus === 'success' &&
             this.state.username.validateStatus === 'success' &&
             this.state.email.validateStatus === 'success' &&
-            this.state.password.validateStatus === 'success'
+            this.state.password.validateStatus === 'success' &&
+            this.state.gender.validateStatus === 'success' &&
+            this.state.userType.validateStatus === 'success'
         );
     }
 
     render() {
+        if(this.state.signupCompleted) {
+            return (
+                <div>
+                    <h1>User Created</h1>
+                    <h3>First Name: {this.state.firstName.value}</h3>
+                    <h3>Last Name: {this.state.lastName.value}</h3>
+                    <h3>Username: {this.state.username.value}</h3>
+                    <h3>Email: {this.state.email.value}</h3>
+                    <h3>Gender: {this.state.gender.value}</h3>
+                    <h3>User Type: {this.state.userType.value}</h3>
+                    <Button type="primary" 
+                            htmlType="submit" 
+                            size="large" 
+                            className="signup-form-button"
+                            onClick={() => this.setState(initialState)}
+                    >Back</Button>
+                </div>
+            )
+        }
         return (
             <div className="signup-container">
-                <h1 className="page-title">Sign Up</h1>
+                <h1 className="page-title">Register User</h1>
                 <div className="signup-content">
                     <Form onSubmit={this.handleSubmit} className="signup-form">
                         <FormItem 
-                            label="Full Name"
-                            validateStatus={this.state.name.validateStatus}
-                            help={this.state.name.errorMsg}>
+                            label="First Name"
+                            validateStatus={this.state.firstName.validateStatus}
+                            help={this.state.firstName.errorMsg}>
                             <Input 
                                 size="large"
-                                name="name"
+                                name="firstName"
                                 autoComplete="off"
-                                placeholder="Your full name"
-                                value={this.state.name.value} 
-                                onChange={(event) => this.handleInputChange(event, this.validateName)} />    
+                                placeholder="User's first name (2 ~ 40 characters)"
+                                value={this.state.firstName.value} 
+                                onChange={(event) => this.handleInputChange(event, this.validateFirstName)} />    
+                        </FormItem>
+                        <FormItem 
+                            label="Last Name"
+                            validateStatus={this.state.lastName.validateStatus}
+                            help={this.state.lastName.errorMsg}>
+                            <Input 
+                                size="large"
+                                name="lastName"
+                                autoComplete="off"
+                                placeholder="User's last name (2 ~ 40 characters)"
+                                value={this.state.lastName.value} 
+                                onChange={(event) => this.handleInputChange(event, this.validateLastName)} />    
                         </FormItem>
                         <FormItem label="Username"
                             hasFeedback
@@ -122,7 +184,7 @@ class Signup extends Component {
                                 name="email" 
                                 type="email" 
                                 autoComplete="off"
-                                placeholder="Your email"
+                                placeholder="User's email"
                                 value={this.state.email.value} 
                                 onBlur={this.validateEmailAvailability}
                                 onChange={(event) => this.handleInputChange(event, this.validateEmail)} />    
@@ -140,13 +202,42 @@ class Signup extends Component {
                                 value={this.state.password.value} 
                                 onChange={(event) => this.handleInputChange(event, this.validatePassword)} />    
                         </FormItem>
+                        <FormItem 
+                            label="Gender"
+                            validateStatus={this.state.gender.validateStatus}
+                            help={this.state.gender.errorMsg}>
+                            <RadioGroup
+                                buttonStyle="solid"
+                                name="gender"
+                                onChange = {(event) => this.handleInputChange(event, this.validateGender)}
+                                >
+                                <Radio.Button value="MALE">Male</Radio.Button>
+                                <Radio.Button value="FEMALE">Female</Radio.Button>
+                                <Radio.Button value="SECRET">Secret</Radio.Button>
+                                <Radio.Button value="WITHOUT">None</Radio.Button>
+                            </RadioGroup>
+                        </FormItem>
+                        <FormItem 
+                            label="User Type"
+                            validateStatus={this.state.userType.validateStatus}
+                            help={this.state.userType.errorMsg}>
+                            <RadioGroup
+                                buttonStyle="solid"
+                                name="userType"
+                                onChange = {(event) => this.handleInputChange(event, this.validateUserType)}
+                                >
+                                <Radio.Button value="STUDENT">Student</Radio.Button>
+                                <Radio.Button value="INSTRUCTOR">Instructor</Radio.Button>
+                                <Radio.Button value="ADMIN">Administrator</Radio.Button>
+                            </RadioGroup>
+                        </FormItem>
                         <FormItem>
                             <Button type="primary" 
                                 htmlType="submit" 
                                 size="large" 
                                 className="signup-form-button"
-                                disabled={this.isFormInvalid()}>Sign up</Button>
-                            Already registed? <Link to="/login">Login now!</Link>
+                                disabled={this.isFormInvalid()}>Register</Button>
+                            Go to Login Page <Link to="/login">Login</Link>
                         </FormItem>
                     </Form>
                 </div>
@@ -156,7 +247,26 @@ class Signup extends Component {
 
     // Validation Functions
 
-    validateName = (name) => {
+    validateFirstName = (name) => {
+        if(name.length < 0) {
+            return {
+                validateStatus: 'error',
+                errorMsg: `Name is too short (Minimum ${NAME_MIN_LENGTH} characters needed.)`
+            }
+        } else if (name.length > NAME_MAX_LENGTH) {
+            return {
+                validationStatus: 'error',
+                errorMsg: `Name is too long (Maximum ${NAME_MAX_LENGTH} characters allowed.)`
+            }
+        } else {
+            return {
+                validateStatus: 'success',
+                errorMsg: null,
+              };            
+        }
+    }
+
+    validateLastName = (name) => {
         if(name.length < NAME_MIN_LENGTH) {
             return {
                 validateStatus: 'error',
@@ -347,6 +457,34 @@ class Signup extends Component {
                 validateStatus: 'success',
                 errorMsg: null,
             };            
+        }
+    }
+
+    validateGender = (gender) => {
+        if(!GENDER_TYPES.includes(gender)) {
+            return {
+                validateStatus: 'error',
+                errorMsg: `User Type is not valid (One of MALE, FEMALE, SECRET, WITHOUT)`
+            };
+        } else {
+            return {
+                validateStatus: 'success',
+                errorMsg: null,
+            }; 
+        }
+    }
+
+    validateUserType = (userType) => {
+        if(!USER_TYPES.includes(userType)) {
+            return {
+                validateStatus: 'error',
+                errorMsg: `User Type is not valid (One of student, instructor, admin)`
+            };
+        } else {
+            return {
+                validateStatus: 'success',
+                errorMsg: null,
+            }; 
         }
     }
 

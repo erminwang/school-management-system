@@ -1,6 +1,8 @@
 package com.erminray.polls.model;
 
 import com.erminray.polls.model.audit.DateAudit;
+import com.erminray.polls.model.user.User;
+
 import javax.persistence.*;
 
 @Entity

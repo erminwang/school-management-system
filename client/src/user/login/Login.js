@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { login } from '../../util/APIUtils';
 import './Login.css';
 import { Link } from 'react-router-dom';
-import { ACCESS_TOKEN } from '../../constants';
+import { ACCESS_TOKEN, USER_TYPE } from '../../constants';
 
 import { Form, Input, Button, Icon, notification } from 'antd';
 const FormItem = Form.Item;
@@ -35,6 +35,7 @@ class LoginForm extends Component {
                 login(loginRequest)
                 .then(response => {
                     localStorage.setItem(ACCESS_TOKEN, response.accessToken);
+                    localStorage.setItem(USER_TYPE, response.userType);
                     this.props.onLogin();
                 }).catch(error => {
                     if(error.status === 401) {
@@ -59,7 +60,10 @@ class LoginForm extends Component {
             <Form onSubmit={this.handleSubmit} className="login-form">
                 <FormItem>
                     {getFieldDecorator('usernameOrEmail', {
-                        rules: [{ required: true, message: 'Please input your username or email!' }],
+                        rules: [
+                            { required: true, message: 'Please input your username or email!' },
+                            {whitespace: true, message: 'Username and Email cannot be empty'}
+                        ]
                     })(
                     <Input 
                         prefix={<Icon type="user" />}
@@ -69,20 +73,19 @@ class LoginForm extends Component {
                     )}
                 </FormItem>
                 <FormItem>
-                {getFieldDecorator('password', {
-                    rules: [{ required: true, message: 'Please input your Password!' }],
-                })(
-                    <Input 
-                        prefix={<Icon type="lock" />}
-                        size="large"
-                        name="password" 
-                        type="password" 
-                        placeholder="Password"  />                        
-                )}
+                    {getFieldDecorator('password', {
+                        rules: [{ required: true, message: 'Please input your Password!' }],
+                    })(
+                        <Input 
+                            prefix={<Icon type="lock" />}
+                            size="large"
+                            name="password" 
+                            type="password" 
+                            placeholder="Password"  />                        
+                    )}
                 </FormItem>
                 <FormItem>
                     <Button type="primary" htmlType="submit" size="large" className="login-form-button">Login</Button>
-                    Or <Link to="/signup">register now!</Link>
                 </FormItem>
             </Form>
         );

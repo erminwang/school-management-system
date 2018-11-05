@@ -1,6 +1,6 @@
-package com.erminray.polls.repository;
+package com.erminray.polls.repository.old;
 
-import com.erminray.polls.model.User;
+import com.erminray.polls.model.user.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 import java.util.List;

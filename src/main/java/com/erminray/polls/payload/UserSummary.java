@@ -4,11 +4,13 @@ public class UserSummary {
     private Long id;
     private String username;
     private String name;
+    private String userType;
 
-    public UserSummary(Long id, String username, String name) {
+    public UserSummary(Long id, String username, String name, String userType) {
         this.id = id;
         this.username = username;
         this.name = name;
+        this.userType = userType;
     }
 
     public Long getId() {
@@ -33,5 +35,13 @@ public class UserSummary {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public String getUserType() {
+        return userType;
+    }
+
+    public void setUserType(String userType) {
+        this.userType = userType;
     }
 }

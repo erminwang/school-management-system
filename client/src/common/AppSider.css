@@ -1,0 +1,14 @@
+#components-layout-demo-fixed-sider .logo {
+    height: 32px;
+    background: rgba(255,255,255,.2);
+    margin: 16px;
+}
+
+.app-content {
+    /* margin-left: 200px; */
+}
+
+.sub-menu {
+    margin-top: 30px;
+    margin-bottom: 0px;
+}
