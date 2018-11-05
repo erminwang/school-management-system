@@ -226,9 +226,9 @@ class Signup extends Component {
                                 name="userType"
                                 onChange = {(event) => this.handleInputChange(event, this.validateUserType)}
                                 >
-                                <Radio.Button value="student">Student</Radio.Button>
-                                <Radio.Button value="instructor">Instructor</Radio.Button>
-                                <Radio.Button value="admin">Administrator</Radio.Button>
+                                <Radio.Button value="STUDENT">Student</Radio.Button>
+                                <Radio.Button value="INSTRUCTOR">Instructor</Radio.Button>
+                                <Radio.Button value="ADMIN">Administrator</Radio.Button>
                             </RadioGroup>
                         </FormItem>
                         <FormItem>

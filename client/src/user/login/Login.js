@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { login } from '../../util/APIUtils';
 import './Login.css';
 import { Link } from 'react-router-dom';
-import { ACCESS_TOKEN } from '../../constants';
+import { ACCESS_TOKEN, USER_TYPE } from '../../constants';
 
 import { Form, Input, Button, Icon, notification } from 'antd';
 const FormItem = Form.Item;
@@ -35,6 +35,7 @@ class LoginForm extends Component {
                 login(loginRequest)
                 .then(response => {
                     localStorage.setItem(ACCESS_TOKEN, response.accessToken);
+                    localStorage.setItem(USER_TYPE, response.userType);
                     this.props.onLogin();
                 }).catch(error => {
                     if(error.status === 401) {

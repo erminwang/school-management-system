@@ -21,6 +21,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -75,8 +77,22 @@ public class AuthController {
         // Store user info into HttpSession
         SecurityContextHolder.getContext().setAuthentication(authentication);
 
+        String userType = "";
+
+        for(GrantedAuthority authority : authentication.getAuthorities()) {
+            if(authority.getAuthority().equals(RoleName.ROLE_ADMIN.toString())) {
+                userType = "ADMIN";
+                break;
+            } else if(authority.getAuthority().equals(RoleName.ROLE_INSTRUCTOR.toString())) {
+                userType = "INSTRUCTOR";
+                break;
+            } else {
+                userType = "STUDENT";
+            }
+        }
+
         String jwt = tokenProvider.generateToken(authentication);
-        return ResponseEntity.ok(new JwtAuthenticationResponse(jwt));
+        return ResponseEntity.ok(new JwtAuthenticationResponse(jwt, userType));
     }
 
     @PostMapping("/signup")
@@ -95,7 +111,7 @@ public class AuthController {
         User user = null;
         Set<Role> roles = new HashSet<>();
         switch(signUpRequest.getUserType()) {
-            case "student":
+            case "STUDENT":
                 user = new Student(signUpRequest.getFirstName(), signUpRequest.getLastName(), signUpRequest.getGender(), signUpRequest.getUsername(),
                         signUpRequest.getEmail(), passwordEncoder.encode(signUpRequest.getPassword()), signUpRequest.getTypeStu());
                 Role studentRole = roleRepository.findByName(RoleName.ROLE_STUDENT)
@@ -103,7 +119,7 @@ public class AuthController {
                 roles.add(studentRole);
                 break;
 
-            case "instructor":
+            case "INSTRUCTOR":
                 user = new Instructor(signUpRequest.getFirstName(), signUpRequest.getLastName(), signUpRequest.getGender(), signUpRequest.getUsername(),
                         signUpRequest.getEmail(), passwordEncoder.encode(signUpRequest.getPassword()), signUpRequest.getTypeInst());
                 Role instructorRole = roleRepository.findByName(RoleName.ROLE_INSTRUCTOR)
@@ -111,7 +127,7 @@ public class AuthController {
                 roles.add(instructorRole);
                 break;
 
-            case "admin":
+            case "ADMIN":
                 user = new Administrator(signUpRequest.getFirstName(), signUpRequest.getLastName(), signUpRequest.getGender(), signUpRequest.getUsername(),
                         signUpRequest.getEmail(), passwordEncoder.encode(signUpRequest.getPassword()), signUpRequest.getTypeAdmin());
                 Role adminRole = roleRepository.findByName(RoleName.ROLE_ADMIN)

@@ -36,7 +36,7 @@ public class ModelMapper {
         }).collect(Collectors.toList());
 
         pollResponse.setChoices(choiceResponses);
-        UserSummary creatorSummary = new UserSummary(creator.getId(), creator.getUsername(), creator.getFirstName() + creator.getLastName());
+        UserSummary creatorSummary = new UserSummary(creator.getId(), creator.getUsername(), creator.getFirstName() + creator.getLastName(), "UNKNOWN_USER");
         pollResponse.setCreatedBy(creatorSummary);
 
         if(userVote != null) {

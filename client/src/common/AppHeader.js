@@ -24,35 +24,35 @@ class AppHeader extends Component {
         let menuItems;
         if(this.props.currentUser) {
           menuItems = [
-            <Menu.Item key="/">
-              <Link to="/">
+            <Menu.Item key="/student/me">
+              <Link to="/student/me">
                 <Icon type="home" className="nav-icon" />
               </Link>
             </Menu.Item>,
             <Menu.Item key="/poll/new">
-            <Link to="/poll/new">
-              <img src={pollIcon} alt="poll" className="poll-icon" />
-            </Link>
-          </Menu.Item>,
-          <Menu.Item key="/profile" className="profile-menu">
-                <ProfileDropdownMenu 
-                  currentUser={this.props.currentUser} 
-                  handleMenuClick={this.handleMenuClick}/>
+              <Link to="/poll/new">
+                <img src={pollIcon} alt="poll" className="poll-icon" />
+              </Link>
+            </Menu.Item>,
+            <Menu.Item key="/profile" className="profile-menu">
+              <ProfileDropdownMenu 
+                currentUser={this.props.currentUser} 
+                handleMenuClick={this.handleMenuClick}/>
             </Menu.Item>
           ]; 
         } else {
           menuItems = [
-            <Menu.Item key="/login">
-              <Link to="/login">Login</Link>
+            <Menu.Item key="/">
+              <Link to="/">Login</Link>
             </Menu.Item>,
             <Menu.Item key="/signup">
-              <Link to="/signup">Signup</Link>
+              <Link to="/faq">FAQ</Link>
             </Menu.Item>                  
           ];
         }
 
         return (
-            <Header className="app-header">
+          <Header className="app-header">
             <div className="container">
               <div className="app-title" >
                 <Link to="/">EasyManagement</Link>
