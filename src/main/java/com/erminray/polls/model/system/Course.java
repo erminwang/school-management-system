@@ -1,7 +1,6 @@
 package com.erminray.polls.model.system;
 
 import com.erminray.polls.model.user.Instructor;
-import org.hibernate.annotations.NaturalId;
 
 import javax.persistence.*;
 import javax.validation.constraints.Max;
@@ -36,17 +35,29 @@ public class Course {
     @Min(0)
     private int waitlistSize;
 
-    @NotBlank
-    @Size(max = 15)
-    private String semester;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "semester_name")
+    private Semester semester;
 
-    @NotBlank
     @ElementCollection
     @CollectionTable(name="schedules", joinColumns=@JoinColumn(name="course_id"))
     @Column(name="schedule")
     private List<String> schedule;
 
-    public Course(@Max(1000) @Min(0) int courseSize, @Max(60) @Min(0) int waitlistSize, @NotBlank @Size(max = 15) String semester, @NotBlank List<String> schedule) {
+    public Course(){
+
+    }
+
+    public Course(CourseType courseType, @Max(1000) @Min(0) int courseSize, @Max(60) @Min(0) int waitlistSize, @NotBlank Semester semester) {
+        this.courseType = courseType;
+        this.courseSize = courseSize;
+        this.waitlistSize = waitlistSize;
+        this.semester = semester;
+    }
+
+    public Course(CourseType courseType, Set<Instructor> instructor, @Max(1000) @Min(0) int courseSize, @Max(60) @Min(0) int waitlistSize, @NotBlank Semester semester, @NotBlank List<String> schedule) {
+        this.courseType = courseType;
+        this.instructor = instructor;
         this.courseSize = courseSize;
         this.waitlistSize = waitlistSize;
         this.semester = semester;
@@ -77,11 +88,11 @@ public class Course {
         this.waitlistSize = waitlistSize;
     }
 
-    public String getSemester() {
+    public Semester getSemester() {
         return semester;
     }
 
-    public void setSemester(String semester) {
+    public void setSemester(Semester semester) {
         this.semester = semester;
     }
 
@@ -93,4 +104,19 @@ public class Course {
         this.schedule = schedule;
     }
 
+    public CourseType getCourseType() {
+        return courseType;
+    }
+
+    public void setCourseType(CourseType courseType) {
+        this.courseType = courseType;
+    }
+
+    public Set<Instructor> getInstructor() {
+        return instructor;
+    }
+
+    public void setInstructor(Set<Instructor> instructor) {
+        this.instructor = instructor;
+    }
 }

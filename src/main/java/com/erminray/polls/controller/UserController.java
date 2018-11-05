@@ -2,11 +2,11 @@ package com.erminray.polls.controller;
 
 import com.erminray.polls.exception.ResourceNotFoundException;
 import com.erminray.polls.model.RoleName;
-import com.erminray.polls.model.User;
+import com.erminray.polls.model.user.User;
 import com.erminray.polls.payload.*;
-import com.erminray.polls.repository.PollRepository;
-import com.erminray.polls.repository.UserRepository;
-import com.erminray.polls.repository.VoteRepository;
+import com.erminray.polls.repository.old.PollRepository;
+import com.erminray.polls.repository.old.UserRepository;
+import com.erminray.polls.repository.old.VoteRepository;
 import com.erminray.polls.security.UserPrincipal;
 import com.erminray.polls.service.PollService;
 import com.erminray.polls.security.CurrentUser;

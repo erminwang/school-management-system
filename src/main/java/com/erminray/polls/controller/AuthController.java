@@ -3,17 +3,16 @@ package com.erminray.polls.controller;
 import com.erminray.polls.exception.AppException;
 import com.erminray.polls.model.Role;
 import com.erminray.polls.model.RoleName;
-import com.erminray.polls.model.User;
+import com.erminray.polls.model.user.User;
 import com.erminray.polls.model.user.Administrator;
-import com.erminray.polls.model.user.Gender;
 import com.erminray.polls.model.user.Instructor;
 import com.erminray.polls.model.user.Student;
 import com.erminray.polls.payload.ApiResponse;
 import com.erminray.polls.payload.JwtAuthenticationResponse;
 import com.erminray.polls.payload.LoginRequest;
 import com.erminray.polls.payload.SignUpRequest;
-import com.erminray.polls.repository.RoleRepository;
-import com.erminray.polls.repository.UserRepository;
+import com.erminray.polls.repository.old.RoleRepository;
+import com.erminray.polls.repository.old.UserRepository;
 import com.erminray.polls.security.JwtTokenProvider;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -24,7 +23,6 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -34,7 +32,6 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import javax.validation.Valid;
 import java.net.URI;
-import java.util.Collections;
 import java.util.HashSet;
 import java.util.Random;
 import java.util.Set;
@@ -155,74 +152,5 @@ public class AuthController {
 
         // "created" returns response with 201 status code
         return ResponseEntity.created(location).body(new ApiResponse(true, "User registered successfully"));
-    }
-
-    @PostMapping("/populate/examples")
-    public ResponseEntity<?> populateExampleUsers() {
-        int studentNum = 200;
-        int instructorNum = 25;
-        int adminNum = 3;
-
-        Gender[] genders = Gender.values();
-        int gendersLen = genders.length;
-
-        Role userRole = roleRepository.findByName(RoleName.ROLE_USER).get();
-        Role stuRole = roleRepository.findByName(RoleName.ROLE_STUDENT).get();
-        Role instRole = roleRepository.findByName(RoleName.ROLE_INSTRUCTOR).get();
-        Role adminRole = roleRepository.findByName(RoleName.ROLE_ADMIN).get();
-
-        for(int i = 0; i < studentNum; i++) {
-            User student = new Student(generateRandomName(), generateRandomName(),
-                    genders[random.nextInt(gendersLen)].toString(), "stu" + i, "stu" + i + "@sfu.ca",
-                    passwordEncoder.encode("password"), "ts");
-            Set<Role> roles = new HashSet<>();
-            roles.add(userRole);
-            roles.add(stuRole);
-            student.setRoles(roles);
-            userRepository.save(student);
-        }
-
-        for(int i = 0; i < instructorNum; i++) {
-            User instructor = new Instructor(generateRandomName(), generateRandomName(),
-                    genders[random.nextInt(gendersLen)].toString(), "inst" + i, "inst" + i + "@sfu.ca",
-                    passwordEncoder.encode("password"), "ti");
-            Set<Role> roles = new HashSet<>();
-            roles.add(userRole);
-            roles.add(instRole);
-            instructor.setRoles(roles);
-            userRepository.save(instructor);
-        }
-
-        for(int i = 0; i < adminNum; i++) {
-            User administrator = new Administrator(generateRandomName(), generateRandomName(),
-                    genders[random.nextInt(gendersLen)].toString(), "admin" + i, "admin" + i + "@sfu.ca",
-                    passwordEncoder.encode("password"), "ta");
-            Set<Role> roles = new HashSet<>();
-            roles.add(userRole);
-            roles.add(adminRole);
-            administrator.setRoles(roles);
-            userRepository.save(administrator);
-        }
-
-        return new ResponseEntity<String>("Successfully Created", HttpStatus.CREATED);
-    }
-
-    private String generateRandomName() {
-        String chars = "abcdefghijklmnopqrstuvwxyz";
-        int charsLen = chars.length();
-
-        StringBuilder sb = new StringBuilder(
-                Character.toString(
-                    Character.toUpperCase(
-                           chars.charAt(random.nextInt(charsLen))
-                    )
-                )
-        );
-
-        for(int i = 0; i < 6; i++) {
-            sb.append(chars.charAt(random.nextInt(charsLen)));
-        }
-
-        return sb.toString();
     }
 }

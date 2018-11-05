@@ -26,8 +26,7 @@ public class CourseType {
     private Set<Course> courses;
 
     @ManyToOne
-    @NotBlank
-    @JoinColumn(name = "department_id", nullable = false)
+    @JoinColumn(name = "department_name", nullable = false)
     private Department department;
 
     //parent is the the course
@@ -42,26 +41,46 @@ public class CourseType {
         inverseJoinColumns={@JoinColumn(name="successor_id")})
     private Set<CourseType> prerequisite;
 
-    @NotBlank
-    @Size(max = 999)
     private int courseNumber;
 
-    @NotBlank
     @Size(max = 60)
     private String title;
 
-    @NotBlank
     @Size(max = 500)
     private String description;
 
     //enum
-    @NotBlank
     @Enumerated(EnumType.STRING)
     private BreadthType breadthType;
 
-    @Max(10)
-    @Min(0)
     private int unit;
+
+    public CourseType() {
+
+    }
+
+    public CourseType(String name, Set<Course> courses, Department department, Set<CourseType> successor, Set<CourseType> prerequisite, @NotBlank @Size(max = 999) int courseNumber, @NotBlank @Size(max = 60) String title, @NotBlank @Size(max = 500) String description, @NotBlank BreadthType breadthType, @Max(10) @Min(0) int unit) {
+        this.name = name;
+        this.courses = courses;
+        this.department = department;
+        this.successor = successor;
+        this.prerequisite = prerequisite;
+        this.courseNumber = courseNumber;
+        this.title = title;
+        this.description = description;
+        this.breadthType = breadthType;
+        this.unit = unit;
+    }
+
+    public CourseType(String name, Department department, @NotBlank @Size(max = 999) int courseNumber, @NotBlank @Size(max = 60) String title, @NotBlank @Size(max = 500) String description, @NotBlank BreadthType breadthType, @Max(10) @Min(0) int unit) {
+        this.name = name;
+        this.department = department;
+        this.courseNumber = courseNumber;
+        this.title = title;
+        this.description = description;
+        this.breadthType = breadthType;
+        this.unit = unit;
+    }
 
     public String getName() {
         return name;

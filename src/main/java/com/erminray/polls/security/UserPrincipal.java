@@ -1,6 +1,6 @@
 package com.erminray.polls.security;
 
-import com.erminray.polls.model.User;
+import com.erminray.polls.model.user.User;
 import com.erminray.polls.model.user.Gender;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.springframework.security.core.GrantedAuthority;

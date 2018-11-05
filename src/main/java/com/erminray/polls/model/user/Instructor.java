@@ -1,9 +1,6 @@
 package com.erminray.polls.model.user;
 
-import com.erminray.polls.model.User;
-
 import javax.persistence.Entity;
-import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 
 @Entity

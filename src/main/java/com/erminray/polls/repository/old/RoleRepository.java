@@ -1,4 +1,4 @@
-package com.erminray.polls.repository;
+package com.erminray.polls.repository.old;
 
 import com.erminray.polls.model.Role;
 import com.erminray.polls.model.RoleName;

@@ -1,10 +1,7 @@
 package com.erminray.polls.model.user;
 
-import com.erminray.polls.model.User;
-import com.erminray.polls.model.system.Course;
 import com.erminray.polls.model.system.CourseResult;
 import com.erminray.polls.model.system.Department;
-import org.hibernate.annotations.Fetch;
 
 import javax.persistence.*;
 import java.util.Set;

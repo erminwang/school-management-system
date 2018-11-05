@@ -1,5 +1,6 @@
-package com.erminray.polls.model;
+package com.erminray.polls.model.user;
 
+import com.erminray.polls.model.Role;
 import com.erminray.polls.model.audit.DateAudit;
 import com.erminray.polls.model.user.Gender;
 import org.hibernate.annotations.NaturalId;
