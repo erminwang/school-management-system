@@ -1,5 +1,7 @@
 package com.erminray.polls.model.system;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
@@ -19,6 +21,7 @@ public class Semester {
         cascade = CascadeType.ALL,
         orphanRemoval = true
     )
+    @JsonBackReference
     private Set<Course> courses;
 
     public Semester(){

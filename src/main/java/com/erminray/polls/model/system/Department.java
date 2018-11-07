@@ -1,6 +1,8 @@
 package com.erminray.polls.model.system;
 
 import com.erminray.polls.model.user.Instructor;
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
@@ -33,6 +35,7 @@ public class Department {
     //when set choice to null or to another Address object -> disconnecting relationship, this will remove the choice objects
     orphanRemoval = true
     )
+    @JsonBackReference
     private Set<CourseType> courses;
 
 //    @OneToOne
