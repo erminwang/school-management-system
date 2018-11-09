@@ -1,6 +1,8 @@
 package com.erminray.polls.model.system;
 
 import com.erminray.polls.model.user.Instructor;
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import javax.persistence.*;
 import javax.validation.constraints.Max;
@@ -19,6 +21,7 @@ public class Course {
 
     @ManyToOne
     @JoinColumn(name = "course_type")
+    @JsonManagedReference
     private CourseType courseType;
 
     @ManyToMany(cascade={CascadeType.ALL})
@@ -35,8 +38,9 @@ public class Course {
     @Min(0)
     private int waitlistSize;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
     @JoinColumn(name = "semester_name")
+    @JsonManagedReference
     private Semester semester;
 
     @ElementCollection
