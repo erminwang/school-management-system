@@ -1,5 +1,6 @@
 package com.erminray.polls.repository.old;
 
+import com.erminray.polls.model.user.Gender;
 import com.erminray.polls.model.user.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
@@ -19,4 +20,8 @@ public interface UserRepository extends JpaRepository<User, Long> {
     Boolean existsByUsername(String username);
 
     Boolean existsByEmail(String email);
+
+    List<User> findByGender(Gender gender);
+
+
 }
