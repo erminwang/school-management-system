@@ -117,3 +117,18 @@ export function getUserVotedPolls(username, page, size) {
         method: 'GET'
     });
 }
+
+export function getUsersByUsernamesAndUserTypes(userTypes, usernames, page, size, sortBy, sortOrder) {
+    let basicUrl = API_BASE_URL + "/users/search";
+    page = page || 0;
+    size = size || 20;
+    sortBy = sortBy || "created";
+    sortOrder = sortOrder || "desc"
+    
+    return request({
+        url: basicUrl + "?types=" + userTypes + "&usernames=" + usernames + "&page=" + page + "&size=" + size + "&sort_by=" + sortBy + "&sort_order=" + sortOrder,
+        method: 'GET' 
+    });
+
+
+}

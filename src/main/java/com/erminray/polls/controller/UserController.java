@@ -10,14 +10,17 @@ import com.erminray.polls.repository.old.VoteRepository;
 import com.erminray.polls.security.UserPrincipal;
 import com.erminray.polls.service.PollService;
 import com.erminray.polls.security.CurrentUser;
+import com.erminray.polls.service.UserService;
 import com.erminray.polls.util.AppConstants;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.web.bind.annotation.*;
 
+import java.awt.print.Pageable;
 import java.util.List;
 
 @RestController
@@ -35,6 +38,9 @@ public class UserController {
 
     @Autowired
     private PollService pollService;
+
+    @Autowired
+    private UserService userService;
 
     private static final Logger logger = LoggerFactory.getLogger(UserController.class);
 
@@ -99,8 +105,18 @@ public class UserController {
         return pollService.getPollsVotedBy(username, currentUser, page, size);
     }
 
+    // following are new urls
+
     @GetMapping("/users/search")
-    public List<User> searchUsersByParameters(@RequestParam(value = "type", defaultValue = "all") String userType) {
-        return userRepository.findAll();
+    @PreAuthorize("hasRole('ADMIN')")
+    public PagedResponse<User> searchUsersByParameters(
+            @RequestParam(value = "types", defaultValue = "student,instructor,admin") String[] userTypes,
+            @RequestParam(value = "usernames", defaultValue = "") String[] usernames,
+            @RequestParam(value = "page", defaultValue = "0") int page,
+            @RequestParam(value = "size", defaultValue = "20") int size,
+            @RequestParam(value = "sort_by", defaultValue = "created") String sortBy,
+            @RequestParam(value = "sort_order", defaultValue = "desc") String sortOrder
+    ) {
+        return userService.getUsersByUsernamesAndTypes(usernames, userTypes, page, size, sortBy, sortOrder);
     }
 }

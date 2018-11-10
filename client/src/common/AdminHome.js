@@ -16,7 +16,7 @@ class AdminHome extends Component {
     constructor(props) {
         super(props);
         this.state={
-            menuIndex: "11",
+            menuIndex: "231",
             contentMarginLeft: DEFAULT_WIDTH
         };
     }

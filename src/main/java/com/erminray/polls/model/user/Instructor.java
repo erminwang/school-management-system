@@ -15,6 +15,7 @@ public class Instructor extends User {
 
     public Instructor(String firstName, String lastName, String gender, String username, String email, String password, String typeInst) {
         super(firstName, lastName, gender, username, email, password);
+        this.userType = UserType.INSTRUCTOR;
         this.typeInst = typeInst;
     }
 
