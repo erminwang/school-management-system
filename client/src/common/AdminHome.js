@@ -5,6 +5,7 @@ import PollList from '../poll/PollList';
 import Signup from '../user/signup/Signup';
 import UserSearch from '../adminUI/UserSearch';
 import Semester from '../adminUI/Semester';
+import Profile from '../user/profile/Profile';
 import './AppSider.css';
 
 const { Content, Sider } = Layout;
@@ -17,7 +18,7 @@ class AdminHome extends Component {
     constructor(props) {
         super(props);
         this.state={
-            menuIndex: "21",
+            menuIndex: "11",
             contentMarginLeft: DEFAULT_WIDTH,
             isRoot: false
         };
@@ -57,9 +58,7 @@ class AdminHome extends Component {
         switch(this.state.menuIndex) {
             case "11":
                 contentBody = (
-                    <div>
-                        <h1>Profile</h1>
-                    </div>
+                    <Profile isAuthenticated={this.props.isAuthenticated} currentUser={this.props.currentUser} {...this.props}/>
                 );
                 break;
             case "21":

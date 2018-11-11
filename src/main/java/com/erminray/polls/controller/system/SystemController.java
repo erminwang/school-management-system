@@ -1,5 +1,6 @@
 package com.erminray.polls.controller.system;
 
+import com.erminray.polls.exception.AppException;
 import com.erminray.polls.model.system.Semester;
 import com.erminray.polls.service.SystemService;
 import org.springframework.beans.factory.annotation.Autowired;

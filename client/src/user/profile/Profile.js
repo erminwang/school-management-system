@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PollList from '../../poll/PollList';
 import { getUserProfile } from '../../util/APIUtils';
-import { Avatar, Tabs } from 'antd';
+import { Avatar, Tabs, Card } from 'antd';
 import { getAvatarColor } from '../../util/Colors';
 import { formatDate } from '../../util/Helpers';
 import LoadingIndicator  from '../../common/LoadingIndicator';
@@ -48,7 +48,7 @@ class Profile extends Component {
     }
       
     componentDidMount() {
-        const username = this.props.match.params.username;
+        const username = this.props.currentUser.username;
         this.loadUserProfile(username);
     }
 
@@ -80,6 +80,7 @@ class Profile extends Component {
                 { 
                     this.state.user ? (
                         <div className="user-profile">
+                            <h2></h2>
                             <div className="user-details">
                                 <div className="user-avatar">
                                     <Avatar className="user-avatar-circle" style={{ backgroundColor: getAvatarColor(this.state.user.firstName + this.state.user.lastName)}}>
@@ -90,7 +91,20 @@ class Profile extends Component {
                                     <div className="full-name">{this.state.user.name}</div>
                                     <div className="username">@{this.state.user.username}</div>
                                     <div className="user-joined">
-                                        Joined {formatDate(this.state.user.joinedAt)}
+                                        Joined SFU on {formatDate(this.state.user.joinedAt)}
+                                    </div>
+                                    <br />
+                                    <div>
+                                        <Card
+                                            title="Basic Info"
+                                        >
+                                            <h5>First Name: {this.state.user.firstName}</h5>
+                                            <h5>Last Name: {this.state.user.lastName}</h5>
+                                            <h5>Email: {this.state.user.email}</h5>
+                                            <h5>Gender: {this.state.user.gender}</h5>
+                                            <h5>Primary Role: {this.state.user.userType}</h5>
+                                            <h5>{this.state.user.secondaryUserType ? "Secondary Role: " + this.state.user.secondaryUserType : null}</h5>
+                                        </Card>
                                     </div>
                                 </div>
                             </div>

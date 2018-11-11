@@ -47,7 +47,8 @@ class Semester extends Component {
         super(props);
         this.state = {
             semesterList: [],
-            isLoading: true
+            pageStatus: 'loading',
+            errorMsg: ""
         };
     }
 
@@ -59,21 +60,31 @@ class Semester extends Component {
                 } else {
                     this.setState({
                         semesterList: response,
-                        isLoading: false
+                        pageStatus: 'success'
                     });
                 }
             })
             .catch((e) => {
-                message.error("Failed to fetch: " + e);
+                message.error("Failed to fetch: " + e.message);
+                this.setState({
+                    pageStatus: 'error',
+                    errorMsg: e.message
+                });
             });
     }
 
     render() {
 
-        if(this.state.isLoading) {
+        if(this.state.pageStatus === 'loading') {
             return (
                 <LoadingIndicator />
             )
+        } else if(this.state.pageStatus === 'error') {
+            return (
+                <div style={{textAlign: 'center'}}>
+                    <h2 style={{color: 'grey'}}>{this.state.errorMsg}</h2>
+                </div>
+            );               
         }
         let semesterData = this.state.semesterList.map((semester) => {
             return {
