@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Input, Select, Checkbox, Button, Row, Col, message, Table, Pagination, InputNumber } from 'antd';
 import { getUsersByUsernamesAndUserTypes } from '../util/APIUtils';
+import LoadingIndicator from '../common/LoadingIndicator';
 
 const TextArea = Input.TextArea;
 const Option = Select.Option;
@@ -26,7 +27,7 @@ const columns = [
     }
 ];
 
-const UserSearchResult = ({props, handleSearch}) => {
+const UserSearchResult = ({props, handleSearch, toggleTableShrink}) => {
     let users = props.userList.map((user) => {
         return {
             ...user,
@@ -38,16 +39,36 @@ const UserSearchResult = ({props, handleSearch}) => {
         return (
             <div></div>
         );
+    } else if(props.isLoading) {
+        return (
+            <LoadingIndicator />
+        )
     }
     return (
         <div>
-            <h3>{props.totalElements} Result(s) Found</h3>
-            <Pagination showQuickJumper current={props.page+1} pageSize={props.size} total={props.totalElements} onChange={(page, pageSize) => handleSearch(page-1)}/>
-            <br />
-            <Table pagination={false} columns={columns} dataSource={users} scroll={{ x: 600 }}/>
-            <br />
-            <Pagination showQuickJumper current={props.page+1} pageSize={props.size} total={props.totalElements} onChange={(page, pageSize) => handleSearch(page-1)}/>
-            <br />
+            <Row>
+                <Col span={10}>
+                    <h3>{props.totalElements} Result(s) Found</h3>
+                </Col>
+                <Col span={14}>
+                    <Checkbox
+                        checked={props.checkedTableShrink}
+                        onChange={() => toggleTableShrink()}
+                    >
+                        Shrink Table
+                    </Checkbox>    
+                </Col>
+            </Row>
+            <Row>    
+                <Col span={24}>
+                    <Pagination showQuickJumper current={props.page+1} pageSize={props.size} total={props.totalElements} onChange={(page, pageSize) => handleSearch(page-1)}/>
+                    <br />
+                    <Table pagination={false} columns={columns} dataSource={users} scroll={{ x: 600, y: props.checkedTableShrink ? 300 : null }}/>
+                    <br />
+                    <Pagination showQuickJumper current={props.page+1} pageSize={props.size} total={props.totalElements} onChange={(page, pageSize) => handleSearch(page-1)}/>
+                    <br />
+                </Col>
+            </Row>
         </div>
     );
 };
@@ -57,6 +78,7 @@ class UserSearch extends Component {
     constructor(props) {
         super(props);
         this.state = {
+            isLoading: false,
             checkedList: defaultOptions,
             indeterminate: true,
             checkAll: false,
@@ -70,7 +92,8 @@ class UserSearch extends Component {
             size: 0,
             totalElements: 0,
             last: false,
-            totalPages: 0
+            totalPages: 0,
+            checkedTableShrink: false
         };
     }
 
@@ -91,7 +114,9 @@ class UserSearch extends Component {
     }
 
     handleSearch = (pageNum) => {
-        console.log(this.state);
+        this.setState({
+            isLoading: true
+        });
         if(!this.state.checkedList.length) {
             message.warning("Please at least choose a user type");
         } else {
@@ -108,13 +133,23 @@ class UserSearch extends Component {
                         size: response.size,
                         totalPages: response.totalPages,
                         totalElements: response.totalElements,
-                        last: response.last
+                        last: response.last,
+                        isLoading: false
                     });
                 })
                 .catch((e) => {
                     message.error("Fail to fetch: " + e);
+                    this.setState({
+                        isLoading: false
+                    });
                 })
         }
+    };
+
+    toggleTableShrink = () => {
+        this.setState({
+            checkedTableShrink: !this.state.checkedTableShrink
+        })
     };
 
     render() {
@@ -122,7 +157,7 @@ class UserSearch extends Component {
             <div>
                 <div style={{display: 'block'}}>
                     <Row>
-                        <Col span={12}>
+                        <Col span={24}>
                             <div style={{ borderBottom: '1px solid #E9E9E9' }}>
                                 <h3>User Types:</h3>
                                 <Checkbox
@@ -136,29 +171,27 @@ class UserSearch extends Component {
                         </Col>
                     </Row>
                     <Row>
-                        <Col span={12}>
+                        <Col span={24}>
                             <CheckboxGroup options={allOptions} value={this.state.checkedList} onChange={this.onSubusersCheckBoxChange} />
                         </Col>
                     </Row>
                     <br/>
                     <Row>
-                        <Col span={12}>
+                        <Col span={24}>
                             <h3>Usernames (separate by ";")</h3>
                             <TextArea placeholder="Usernames separated by ';'" autosize={{ minRows: 2, maxRows: 6 }} onChange={(e) => this.setState({usernameText: e.target.value})}/>
                         </Col>
                     </Row>    
                     <br/>
                     <Row>
-                        <Col span={6}>
-                            <h3>Results Per Page: </h3>
-                        </Col>
-                        <Col span={6}>
-                            <InputNumber size="large" min={10} max={50} defaultValue={20} onChange={(value) => this.setState({inputSize: value})}/>
+                        <Col span={24}>
+                            <h3 style={{display: 'inline', clear: 'none'}}>Results Per Page: </h3>
+                            <span><InputNumber size="large" min={10} max={50} defaultValue={20} onChange={(value) => this.setState({inputSize: value})}/></span>
                         </Col>
                     </Row>
                     <br />
                     <Row>
-                        <Col span={12}>
+                        <Col span={24}>
                             <h3>Sort By: </h3>
                             <Select defaultValue={this.state.sortBy} style={{ width: 120, marginRight: 10}} onChange={(value) => this.setState({sortBy: value})}>
                                 <Option value="created">Creation Date</Option>
@@ -178,7 +211,9 @@ class UserSearch extends Component {
                     </Row>
                     <br />
                 </div>
-                <UserSearchResult props={this.state} handleSearch={this.handleSearch} />
+                <div>
+                    <UserSearchResult props={this.state} handleSearch={this.handleSearch} toggleTableShrink={this.toggleTableShrink} />
+                </div>
             </div>
         );
     }

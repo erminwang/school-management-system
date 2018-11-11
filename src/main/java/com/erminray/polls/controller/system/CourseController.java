@@ -14,7 +14,7 @@ public class CourseController {
     @Autowired
     private CourseService courseService;
 
-    @GetMapping("/")
+    @GetMapping
     public List<Course> getCourses(@RequestParam(value = "courseLevel", required = false) Integer courseLevel,
                                    @RequestParam(value = "compare", required = false) String compare) throws Exception{
         if (courseLevel == null) return courseService.getAllCourses();

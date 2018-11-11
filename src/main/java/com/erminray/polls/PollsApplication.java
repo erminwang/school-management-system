@@ -1,7 +1,7 @@
 package com.erminray.polls;
 
-import com.erminray.polls.model.Role;
-import com.erminray.polls.model.RoleName;
+import com.erminray.polls.model.user.Role;
+import com.erminray.polls.model.user.RoleName;
 import com.erminray.polls.repository.old.RoleRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;

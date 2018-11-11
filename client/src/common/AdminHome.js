@@ -3,7 +3,8 @@ import { Layout, Menu, Icon } from 'antd';
 import { withRouter } from 'react-router-dom';
 import PollList from '../poll/PollList';
 import Signup from '../user/signup/Signup';
-import UserSearch from '../adminTool/UserSearch';
+import UserSearch from '../adminUI/UserSearch';
+import Semester from '../adminUI/Semester';
 import './AppSider.css';
 
 const { Content, Sider } = Layout;
@@ -16,8 +17,9 @@ class AdminHome extends Component {
     constructor(props) {
         super(props);
         this.state={
-            menuIndex: "231",
-            contentMarginLeft: DEFAULT_WIDTH
+            menuIndex: "21",
+            contentMarginLeft: DEFAULT_WIDTH,
+            isRoot: false
         };
     }
 
@@ -30,6 +32,17 @@ class AdminHome extends Component {
             this.setState({
                 contentMarginLeft: DEFAULT_WIDTH
             });
+        }
+    }
+
+    rootRights = () => {
+        if(this.state.isRoot) {
+            return (
+                <SubMenu className="sub-menu" key="sub5" title={<span><Icon type="robot" /><span>Root</span></span>}>
+                    <Menu.Item key="51">Root Console</Menu.Item>
+                    <Menu.Item key="52">User Deletion History</Menu.Item>
+                </SubMenu>
+            ) 
         }
     }
 
@@ -47,6 +60,11 @@ class AdminHome extends Component {
                     <div>
                         <h1>Profile</h1>
                     </div>
+                );
+                break;
+            case "21":
+                contentBody = (
+                    <Semester />
                 );
                 break;
             case "231":
@@ -109,6 +127,7 @@ class AdminHome extends Component {
                             <Menu.Item key="13">Appointments</Menu.Item>
                             <Menu.Item key="14">Emergency Contact</Menu.Item>
                         </SubMenu>
+                        {this.rootRights()}
                         <SubMenu className="sub-menu" key="sub2" title={<span><Icon type="cluster" /><span>Management</span></span>}>
                             <Menu.Item key="21">Semesters</Menu.Item>
                             <Menu.Item key="22">Departments</Menu.Item>

@@ -129,6 +129,11 @@ export function getUsersByUsernamesAndUserTypes(userTypes, usernames, page, size
         url: basicUrl + "?types=" + userTypes + "&usernames=" + usernames + "&page=" + page + "&size=" + size + "&sort_by=" + sortBy + "&sort_order=" + sortOrder,
         method: 'GET' 
     });
+}
 
-
+export function getSemesters() {
+    return request({
+        url: API_BASE_URL + "/system/semesters",
+        method: 'GET'
+    })
 }

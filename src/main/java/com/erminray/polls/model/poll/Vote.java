@@ -1,6 +1,8 @@
-package com.erminray.polls.model;
+package com.erminray.polls.model.poll;
 
 import com.erminray.polls.model.audit.DateAudit;
+import com.erminray.polls.model.poll.Choice;
+import com.erminray.polls.model.poll.Poll;
 import com.erminray.polls.model.user.User;
 
 import javax.persistence.*;

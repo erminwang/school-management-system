@@ -24,11 +24,9 @@ public class Course {
     @JsonManagedReference
     private CourseType courseType;
 
-    @ManyToMany(cascade={CascadeType.ALL})
-    @JoinTable(name="course_instructors",
-        joinColumns={@JoinColumn(name="course_id")},
-        inverseJoinColumns={@JoinColumn(name="instructor_id")})
-    private Set<Instructor> instructor;
+    @ManyToMany(mappedBy = "coursesOwned")
+    @JsonBackReference
+    private Set<Instructor> instructors;
 
     @Max(1000)
     @Min(0)
@@ -52,7 +50,8 @@ public class Course {
 
     }
 
-    public Course(CourseType courseType, @Max(1000) @Min(0) int courseSize, @Max(60) @Min(0) int waitlistSize, @NotBlank Semester semester) {
+    public Course(CourseType courseType, @Max(1000) @Min(0) int courseSize, @Max(60) @Min(0) int waitlistSize,
+                  @NotBlank Semester semester) {
         this.courseType = courseType;
         this.courseSize = courseSize;
         this.waitlistSize = waitlistSize;
@@ -61,7 +60,7 @@ public class Course {
 
     public Course(CourseType courseType, Set<Instructor> instructor, @Max(1000) @Min(0) int courseSize, @Max(60) @Min(0) int waitlistSize, @NotBlank Semester semester, @NotBlank List<String> schedule) {
         this.courseType = courseType;
-        this.instructor = instructor;
+        this.instructors = instructors;
         this.courseSize = courseSize;
         this.waitlistSize = waitlistSize;
         this.semester = semester;
@@ -116,11 +115,11 @@ public class Course {
         this.courseType = courseType;
     }
 
-    public Set<Instructor> getInstructor() {
-        return instructor;
+    public Set<Instructor> getInstructors() {
+        return instructors;
     }
 
-    public void setInstructor(Set<Instructor> instructor) {
-        this.instructor = instructor;
+    public void setInstructors(Set<Instructor> instructors) {
+        this.instructors = instructors;
     }
 }

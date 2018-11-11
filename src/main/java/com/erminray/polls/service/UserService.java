@@ -67,7 +67,6 @@ public class UserService {
         }
 
         Pageable pageable = PageRequest.of(page, size, sortDirection, sortBy);
-        List<String> usernames = new ArrayList<>(Arrays.asList(usernamesParam));
         List<UserType> userTypes = new ArrayList<>();
         for(String rawType : userTypesParam) {
             try{
@@ -82,6 +81,7 @@ public class UserService {
         if(usernamesParam.length == 0) {
             users = userRepository.findByUserTypeIn(userTypes, pageable);
         } else {
+            List<String> usernames = new ArrayList<>(Arrays.asList(usernamesParam));
             users = userRepository.findByUsernameInAndUserTypeIn(usernames, userTypes, pageable);
         }
 

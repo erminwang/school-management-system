@@ -1,6 +1,7 @@
 package com.erminray.polls.model.system;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import org.springframework.lang.NonNull;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -16,6 +17,7 @@ public class Semester {
     private LocalDate startDate;
     @NotNull
     private LocalDate endDate;
+
     @OneToMany(
         mappedBy = "semester",
         cascade = CascadeType.ALL,
@@ -24,21 +26,32 @@ public class Semester {
     @JsonBackReference
     private Set<Course> courses;
 
+    @NonNull
+    private LocalDate enrollmentStartDate;
+
+    @NonNull
+    private LocalDate enrollmentEndDate;
+
     public Semester(){
 
     }
 
-    public Semester(String name, @NotNull LocalDate startDate, @NotNull LocalDate endDate, Set<Course> courses) {
+    public Semester(String name, @NotNull LocalDate startDate, @NotNull LocalDate endDate, Set<Course> courses,
+                    @NonNull LocalDate enrollmentStartDate, @NonNull LocalDate enrollmentEndDate) {
         this.name = name;
         this.startDate = startDate;
         this.endDate = endDate;
         this.courses = courses;
+        this.enrollmentStartDate = enrollmentStartDate;
+        this.enrollmentEndDate = enrollmentEndDate;
     }
 
     public Semester(String name, @NotNull LocalDate startDate, @NotNull LocalDate endDate) {
         this.name = name;
         this.startDate = startDate;
         this.endDate = endDate;
+        this.enrollmentStartDate = startDate.minusMonths(1);
+        this.enrollmentEndDate = startDate.plusMonths(1);
     }
 
     public String getName() {
@@ -63,5 +76,29 @@ public class Semester {
 
     public void setEndDate(LocalDate endDate) {
         this.endDate = endDate;
+    }
+
+    public Set<Course> getCourses() {
+        return courses;
+    }
+
+    public void setCourses(Set<Course> courses) {
+        this.courses = courses;
+    }
+
+    public LocalDate getEnrollmentStartDate() {
+        return enrollmentStartDate;
+    }
+
+    public void setEnrollmentStartDate(LocalDate enrollmentStartDate) {
+        this.enrollmentStartDate = enrollmentStartDate;
+    }
+
+    public LocalDate getEnrollmentEndDate() {
+        return enrollmentEndDate;
+    }
+
+    public void setEnrollmentEndDate(LocalDate enrollmentEndDate) {
+        this.enrollmentEndDate = enrollmentEndDate;
     }
 }

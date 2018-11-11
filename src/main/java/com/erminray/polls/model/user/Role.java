@@ -1,4 +1,4 @@
-package com.erminray.polls.model;
+package com.erminray.polls.model.user;
 
 import org.hibernate.annotations.NaturalId;
 import javax.persistence.*;

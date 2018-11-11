@@ -1,7 +1,7 @@
 package com.erminray.polls.controller.system;
 
-import com.erminray.polls.model.Role;
-import com.erminray.polls.model.RoleName;
+import com.erminray.polls.model.user.Role;
+import com.erminray.polls.model.user.RoleName;
 import com.erminray.polls.model.system.*;
 import com.erminray.polls.model.user.User;
 import com.erminray.polls.model.user.Administrator;
@@ -11,13 +11,13 @@ import com.erminray.polls.model.user.Student;
 import com.erminray.polls.repository.old.RoleRepository;
 import com.erminray.polls.repository.old.UserRepository;
 import com.erminray.polls.repository.system.*;
+import com.erminray.polls.repository.user.InstructorRepository;
 import com.erminray.polls.security.JwtTokenProvider;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.util.Assert;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -34,6 +34,9 @@ public class PopDataController {
 
     @Autowired
     UserRepository userRepository;
+
+    @Autowired
+    InstructorRepository instructorRepository;
 
     @Autowired
     RoleRepository roleRepository;
@@ -127,7 +130,7 @@ public class PopDataController {
         }
 
         //create courseTypes
-        int[] courseNumberList = {700,800,900};
+        int[] courseNumberList = {700, 725, 737, 800, 811, 900, 930};
         String description = "This is an introduction course to ";
         List<Department> departments = departmentRepository.findAll();
         String title = "Title";
@@ -143,15 +146,31 @@ public class PopDataController {
             }
         }
         //create semesters
-        Semester semester = new Semester("FALL2018",LocalDate.of(2018,9,1),LocalDate.of(2018,12,31));
-        semesterRepository.save(semester);
+        Semester semester1 = new Semester("SPRING2018",LocalDate.of(2018,1,1),LocalDate.of(2018,4,30));
+        Semester semester2 = new Semester("SUMMER2018",LocalDate.of(2018,5,1),LocalDate.of(2018,8,31));
+        Semester semester3 = new Semester("FALL2018",LocalDate.of(2018,9,1),LocalDate.of(2018,12,31));
+        Semester semester4 = new Semester("SPRING2019",LocalDate.of(2019,1,1),LocalDate.of(2019,4,30));
+        semesterRepository.save(semester1);
+        semesterRepository.save(semester2);
+        semesterRepository.save(semester3);
+        semesterRepository.save(semester4);
+
+        List<Instructor> instructors = instructorRepository.findAll();
+        int instructorsSize = instructors.size();
 
         //create courses (instances)
-        for (CourseType courseType : courseTypeRepository.findAll()){
-            Course course = new Course(courseType, 300,10, semester);
-            courseRepository.save(course);
+        Semester[] semesterArr = {semester1, semester2, semester3, semester4};
+        for (Semester semester : semesterArr) {
+            for (CourseType courseType : courseTypeRepository.findAll()){
+                Course course = new Course(courseType, random.nextInt(200) + 30, random.nextInt(60), semester);
+                instructors.get(random.nextInt(instructorsSize)).getCoursesOwned().add(course);
+                courseRepository.save(course);
+            }
         }
 
+        for(Instructor instructor : instructors) {
+            instructorRepository.save(instructor);
+        }
         return new ResponseEntity<String>("Successfully Created", HttpStatus.CREATED);
     }
 

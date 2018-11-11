@@ -1,4 +1,4 @@
-package com.erminray.polls.model;
+package com.erminray.polls.model.poll;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;

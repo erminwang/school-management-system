@@ -15,7 +15,8 @@ class InstructorHome extends Component {
         super(props);
         this.state={
             menuIndex: "11",
-            contentMarginLeft: DEFAULT_WIDTH
+            contentMarginLeft: DEFAULT_WIDTH,
+            isDean: false
         };
     }
 
@@ -28,6 +29,17 @@ class InstructorHome extends Component {
             this.setState({
                 contentMarginLeft: DEFAULT_WIDTH
             });
+        }
+    }
+
+    deanRights = () => {
+        if(this.state.isDean) {
+            return (
+                <SubMenu className="sub-menu" key="sub7" title={<span><Icon type="robot" /><span>Dean</span></span>}>
+                    <Menu.Item key="71">Approve Courses</Menu.Item>
+                    <Menu.Item key="72">Approval History</Menu.Item>
+                </SubMenu>
+            ) 
         }
     }
 
@@ -103,6 +115,7 @@ class InstructorHome extends Component {
                             <Menu.Item key="23">Teaching History</Menu.Item>
                             <Menu.Item key="24">Current Courses</Menu.Item>
                         </SubMenu>
+                        {this.deanRights()}
                         <SubMenu className="sub-menu" key="sub3" title={<span><Icon type="skin" /><span>Recreation</span></span>}>
                             <Menu.Item key="31">Athletics Waiver</Menu.Item>
                             <Menu.Item key="32">Waiver FAQ</Menu.Item>
