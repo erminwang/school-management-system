@@ -53,7 +53,7 @@ class App extends Component {
     });
     getCurrentUser()
     .then(response => {
-      const userType = response.userType;
+      const userType = response.primaryUserType;
       console.log(userType);
       this.setState({
         userType: userType,

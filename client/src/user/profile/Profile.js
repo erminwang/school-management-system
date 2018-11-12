@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PollList from '../../poll/PollList';
 import { getUserProfile } from '../../util/APIUtils';
-import { Avatar, Tabs, Card } from 'antd';
+import { Avatar, Tabs, Card, Row, Col } from 'antd';
 import { getAvatarColor } from '../../util/Colors';
 import { formatDate } from '../../util/Helpers';
 import LoadingIndicator  from '../../common/LoadingIndicator';
@@ -53,8 +53,8 @@ class Profile extends Component {
     }
 
     componentDidUpdate(nextProps) {
-        if(this.props.match.params.username !== nextProps.match.params.username) {
-            this.loadUserProfile(nextProps.match.params.username);
+        if(this.props.currentUser.username !== nextProps.currentUser.username) {
+            this.loadUserProfile(nextProps.currentUser.username);
         }        
     }
 
@@ -76,52 +76,60 @@ class Profile extends Component {
         };
 
         return (
-            <div className="profile">
+            <div>
                 { 
                     this.state.user ? (
-                        <div className="user-profile">
-                            <h2></h2>
-                            <div className="user-details">
-                                <div className="user-avatar">
-                                    <Avatar className="user-avatar-circle" style={{ backgroundColor: getAvatarColor(this.state.user.firstName + this.state.user.lastName)}}>
-                                        {this.state.user.firstName[0].toUpperCase() + this.state.user.lastName[0].toUpperCase()}
-                                    </Avatar>
-                                </div>
-                                <div className="user-summary">
-                                    <div className="full-name">{this.state.user.name}</div>
-                                    <div className="username">@{this.state.user.username}</div>
-                                    <div className="user-joined">
-                                        Joined SFU on {formatDate(this.state.user.joinedAt)}
+                        <div>
+                            <Row>
+                                <Col xs={24} sm={12} md={12} lg={12}>
+                                    <div style={{textAlign: 'center'}}>
+                                        <Avatar 
+                                            size={100}
+                                            style={{ fontSize: 30, backgroundColor: getAvatarColor(this.state.user.firstName + this.state.user.lastName)}}>
+                                            {this.state.user.firstName[0].toUpperCase() + this.state.user.lastName[0].toUpperCase()}
+                                        </Avatar>
+                                        <div style={{marginTop: 20, marginBottom: 20}}>@{this.state.user.username}</div>
+                                        <div>
+                                            Joined SFU on {formatDate(this.state.user.joinedAt)}
+                                        </div>
+                                        <br />
                                     </div>
-                                    <br />
+                                </Col>    
+                                <Col xs={24} sm={12} md={12} lg={12}>
                                     <div>
-                                        <Card
-                                            title="Basic Info"
-                                        >
-                                            <h5>First Name: {this.state.user.firstName}</h5>
-                                            <h5>Last Name: {this.state.user.lastName}</h5>
-                                            <h5>Email: {this.state.user.email}</h5>
-                                            <h5>Gender: {this.state.user.gender}</h5>
-                                            <h5>Primary Role: {this.state.user.userType}</h5>
-                                            <h5>{this.state.user.secondaryUserType ? "Secondary Role: " + this.state.user.secondaryUserType : null}</h5>
-                                        </Card>
+                                        <div>
+                                            <Card
+                                                title="Basic Info"
+                                            >
+                                                <h5>First Name: {this.state.user.firstName}</h5>
+                                                <h5>Last Name: {this.state.user.lastName}</h5>
+                                                <h5>Email: {this.state.user.email}</h5>
+                                                <h5>Gender: {this.state.user.gender}</h5>
+                                                <h5>Primary Role: {this.state.user.primaryUserType}</h5>
+                                                <h5>{this.state.user.secondaryUserType ? "Secondary Role: " + this.state.user.secondaryUserType : null}</h5>
+                                            </Card>
+                                        </div>
                                     </div>
-                                </div>
-                            </div>
-                            <div className="user-poll-details">    
-                                <Tabs defaultActiveKey="1" 
-                                    animated={false}
-                                    tabBarStyle={tabBarStyle}
-                                    size="large"
-                                    className="profile-tabs">
-                                    <TabPane tab={`${this.state.user.pollCount} Polls`} key="1">
-                                        <PollList username={this.props.match.params.username} type="USER_CREATED_POLLS" />
-                                    </TabPane>
-                                    <TabPane tab={`${this.state.user.voteCount} Votes`}  key="2">
-                                        <PollList username={this.props.match.params.username} type="USER_VOTED_POLLS" />
-                                    </TabPane>
-                                </Tabs>
-                            </div>  
+                                </Col>
+                            </Row>
+                            <Row>
+                                <Col span={24}>
+                                    <div>    
+                                        <Tabs defaultActiveKey="1" 
+                                            animated={false}
+                                            tabBarStyle={tabBarStyle}
+                                            size="large"
+                                        >
+                                            <TabPane tab={`${this.state.user.pollCount} Polls`} key="1">
+                                                <PollList username={this.props.currentUser.username} type="USER_CREATED_POLLS" />
+                                            </TabPane>
+                                            <TabPane tab={`${this.state.user.voteCount} Votes`}  key="2">
+                                                <PollList username={this.props.currentUser.username} type="USER_VOTED_POLLS" />
+                                            </TabPane>
+                                        </Tabs>
+                                    </div>
+                                </Col>
+                            </Row>   
                         </div>  
                     ): null               
                 }
