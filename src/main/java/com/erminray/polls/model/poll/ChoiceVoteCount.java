@@ -1,4 +1,4 @@
-package com.erminray.polls.model;
+package com.erminray.polls.model.poll;
 
 public class ChoiceVoteCount {
     private Long choiceId;

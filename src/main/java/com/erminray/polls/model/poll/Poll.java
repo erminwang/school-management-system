@@ -1,6 +1,7 @@
-package com.erminray.polls.model;
+package com.erminray.polls.model.poll;
 
 import com.erminray.polls.model.audit.UserDateAudit;
+import com.erminray.polls.model.poll.Choice;
 import org.hibernate.annotations.BatchSize;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;

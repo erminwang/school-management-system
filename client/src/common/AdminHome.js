@@ -3,7 +3,9 @@ import { Layout, Menu, Icon } from 'antd';
 import { withRouter } from 'react-router-dom';
 import PollList from '../poll/PollList';
 import Signup from '../user/signup/Signup';
-import UserSearch from '../adminTool/UserSearch';
+import UserSearch from '../adminUI/UserSearch';
+import Semester from '../adminUI/Semester';
+import Profile from '../user/profile/Profile';
 import './AppSider.css';
 
 const { Content, Sider } = Layout;
@@ -17,7 +19,8 @@ class AdminHome extends Component {
         super(props);
         this.state={
             menuIndex: "11",
-            contentMarginLeft: DEFAULT_WIDTH
+            contentMarginLeft: DEFAULT_WIDTH,
+            isRoot: false
         };
     }
 
@@ -33,6 +36,17 @@ class AdminHome extends Component {
         }
     }
 
+    rootRights = () => {
+        if(this.state.isRoot) {
+            return (
+                <SubMenu className="sub-menu" key="sub5" title={<span><Icon type="robot" /><span>Root</span></span>}>
+                    <Menu.Item key="51">Root Console</Menu.Item>
+                    <Menu.Item key="52">User Deletion History</Menu.Item>
+                </SubMenu>
+            ) 
+        }
+    }
+
     render() {
 
         let contentBody = (
@@ -44,9 +58,12 @@ class AdminHome extends Component {
         switch(this.state.menuIndex) {
             case "11":
                 contentBody = (
-                    <div>
-                        <h1>Profile</h1>
-                    </div>
+                    <Profile isAuthenticated={this.props.isAuthenticated} currentUser={this.props.currentUser} {...this.props}/>
+                );
+                break;
+            case "21":
+                contentBody = (
+                    <Semester />
                 );
                 break;
             case "231":
@@ -109,6 +126,7 @@ class AdminHome extends Component {
                             <Menu.Item key="13">Appointments</Menu.Item>
                             <Menu.Item key="14">Emergency Contact</Menu.Item>
                         </SubMenu>
+                        {this.rootRights()}
                         <SubMenu className="sub-menu" key="sub2" title={<span><Icon type="cluster" /><span>Management</span></span>}>
                             <Menu.Item key="21">Semesters</Menu.Item>
                             <Menu.Item key="22">Departments</Menu.Item>

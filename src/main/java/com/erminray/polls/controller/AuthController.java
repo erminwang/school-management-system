@@ -1,8 +1,8 @@
 package com.erminray.polls.controller;
 
 import com.erminray.polls.exception.AppException;
-import com.erminray.polls.model.Role;
-import com.erminray.polls.model.RoleName;
+import com.erminray.polls.model.user.Role;
+import com.erminray.polls.model.user.RoleName;
 import com.erminray.polls.model.user.User;
 import com.erminray.polls.model.user.Administrator;
 import com.erminray.polls.model.user.Instructor;
@@ -21,7 +21,6 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.PostMapping;

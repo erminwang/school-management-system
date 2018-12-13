@@ -1,6 +1,8 @@
 package com.erminray.polls.model.system;
 
 import com.erminray.polls.model.user.Instructor;
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import javax.persistence.*;
 import javax.validation.constraints.Max;
@@ -19,13 +21,12 @@ public class Course {
 
     @ManyToOne
     @JoinColumn(name = "course_type")
+    @JsonManagedReference
     private CourseType courseType;
 
-    @ManyToMany(cascade={CascadeType.ALL})
-    @JoinTable(name="course_instructors",
-        joinColumns={@JoinColumn(name="course_id")},
-        inverseJoinColumns={@JoinColumn(name="instructor_id")})
-    private Set<Instructor> instructor;
+    @ManyToMany(mappedBy = "coursesOwned")
+    @JsonBackReference
+    private Set<Instructor> instructors;
 
     @Max(1000)
     @Min(0)
@@ -35,8 +36,9 @@ public class Course {
     @Min(0)
     private int waitlistSize;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
     @JoinColumn(name = "semester_name")
+    @JsonManagedReference
     private Semester semester;
 
     @ElementCollection
@@ -48,7 +50,8 @@ public class Course {
 
     }
 
-    public Course(CourseType courseType, @Max(1000) @Min(0) int courseSize, @Max(60) @Min(0) int waitlistSize, @NotBlank Semester semester) {
+    public Course(CourseType courseType, @Max(1000) @Min(0) int courseSize, @Max(60) @Min(0) int waitlistSize,
+                  @NotBlank Semester semester) {
         this.courseType = courseType;
         this.courseSize = courseSize;
         this.waitlistSize = waitlistSize;
@@ -57,7 +60,7 @@ public class Course {
 
     public Course(CourseType courseType, Set<Instructor> instructor, @Max(1000) @Min(0) int courseSize, @Max(60) @Min(0) int waitlistSize, @NotBlank Semester semester, @NotBlank List<String> schedule) {
         this.courseType = courseType;
-        this.instructor = instructor;
+        this.instructors = instructors;
         this.courseSize = courseSize;
         this.waitlistSize = waitlistSize;
         this.semester = semester;
@@ -112,11 +115,11 @@ public class Course {
         this.courseType = courseType;
     }
 
-    public Set<Instructor> getInstructor() {
-        return instructor;
+    public Set<Instructor> getInstructors() {
+        return instructors;
     }
 
-    public void setInstructor(Set<Instructor> instructor) {
-        this.instructor = instructor;
+    public void setInstructors(Set<Instructor> instructors) {
+        this.instructors = instructors;
     }
 }

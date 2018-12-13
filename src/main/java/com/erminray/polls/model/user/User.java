@@ -1,8 +1,7 @@
 package com.erminray.polls.model.user;
 
-import com.erminray.polls.model.Role;
 import com.erminray.polls.model.audit.DateAudit;
-import com.erminray.polls.model.user.Gender;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.hibernate.annotations.NaturalId;
 import javax.persistence.*;
 import javax.validation.constraints.Email;
@@ -37,6 +36,9 @@ public class User extends DateAudit {
     @Enumerated(EnumType.ORDINAL)
     private Gender gender;
 
+    @Enumerated(EnumType.STRING)
+    protected UserType userType;
+
     @NotBlank
     @Size(max = 15)
     private String username;
@@ -47,6 +49,7 @@ public class User extends DateAudit {
     @Email
     private String email;
 
+    @JsonIgnore
     @NotBlank
     @Size(max = 100)
     private String password;
@@ -136,5 +139,13 @@ public class User extends DateAudit {
 
     public void setRoles(Set<Role> roles) {
         this.roles = roles;
+    }
+
+    public UserType getUserType() {
+        return userType;
+    }
+
+    public void setUserType(UserType userType) {
+        this.userType = userType;
     }
 }

@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { Layout, Menu, Icon } from 'antd';
 import { withRouter } from 'react-router-dom';
 import PollList from '../poll/PollList';
+import Profile from '../user/profile/Profile';
 import './AppSider.css';
 
 const { Content, Sider } = Layout;
@@ -15,7 +16,8 @@ class InstructorHome extends Component {
         super(props);
         this.state={
             menuIndex: "11",
-            contentMarginLeft: DEFAULT_WIDTH
+            contentMarginLeft: DEFAULT_WIDTH,
+            isDean: false
         };
     }
 
@@ -31,6 +33,17 @@ class InstructorHome extends Component {
         }
     }
 
+    deanRights = () => {
+        if(this.state.isDean) {
+            return (
+                <SubMenu className="sub-menu" key="sub7" title={<span><Icon type="robot" /><span>Dean</span></span>}>
+                    <Menu.Item key="71">Approve Courses</Menu.Item>
+                    <Menu.Item key="72">Approval History</Menu.Item>
+                </SubMenu>
+            ) 
+        }
+    }
+
     render() {
 
         let contentBody = (
@@ -42,9 +55,7 @@ class InstructorHome extends Component {
         switch(this.state.menuIndex) {
             case "11":
                 contentBody = (
-                    <div>
-                        <h1>Profile</h1>
-                    </div>
+                    <Profile isAuthenticated={this.props.isAuthenticated} currentUser={this.props.currentUser} {...this.props}/>
                 );
                 break;
             case "45":
@@ -103,6 +114,7 @@ class InstructorHome extends Component {
                             <Menu.Item key="23">Teaching History</Menu.Item>
                             <Menu.Item key="24">Current Courses</Menu.Item>
                         </SubMenu>
+                        {this.deanRights()}
                         <SubMenu className="sub-menu" key="sub3" title={<span><Icon type="skin" /><span>Recreation</span></span>}>
                             <Menu.Item key="31">Athletics Waiver</Menu.Item>
                             <Menu.Item key="32">Waiver FAQ</Menu.Item>

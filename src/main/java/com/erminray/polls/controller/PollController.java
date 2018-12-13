@@ -1,6 +1,6 @@
 package com.erminray.polls.controller;
 
-import com.erminray.polls.model.*;
+import com.erminray.polls.model.poll.Poll;
 import com.erminray.polls.payload.*;
 import com.erminray.polls.repository.old.PollRepository;
 import com.erminray.polls.repository.old.UserRepository;

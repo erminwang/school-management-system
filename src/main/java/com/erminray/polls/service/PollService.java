@@ -2,7 +2,10 @@ package com.erminray.polls.service;
 
 import com.erminray.polls.exception.BadRequestException;
 import com.erminray.polls.exception.ResourceNotFoundException;
-import com.erminray.polls.model.*;
+import com.erminray.polls.model.poll.Choice;
+import com.erminray.polls.model.poll.ChoiceVoteCount;
+import com.erminray.polls.model.poll.Poll;
+import com.erminray.polls.model.poll.Vote;
 import com.erminray.polls.model.user.User;
 import com.erminray.polls.payload.PagedResponse;
 import com.erminray.polls.payload.PollRequest;

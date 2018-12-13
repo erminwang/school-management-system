@@ -29,6 +29,7 @@ public class Student extends User {
     }
     public Student(String firstName, String lastName, String gender, String username, String email, String password, String typeStu) {
         super(firstName, lastName, gender, username, email, password);
+        this.userType = UserType.STUDENT;
         this.typeStu = typeStu;
     }
 

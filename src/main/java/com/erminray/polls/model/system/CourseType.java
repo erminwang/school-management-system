@@ -1,6 +1,7 @@
 package com.erminray.polls.model.system;
 
-import org.hibernate.annotations.NaturalId;
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import javax.persistence.*;
 import javax.validation.constraints.Max;
@@ -23,10 +24,12 @@ public class CourseType {
         //when set choice to null or to another Address object -> disconnecting relationship, this will remove the choice objects
         orphanRemoval = true
     )
+    @JsonBackReference
     private Set<Course> courses;
 
     @ManyToOne
     @JoinColumn(name = "department_name", nullable = false)
+    @JsonManagedReference
     private Department department;
 
     //parent is the the course

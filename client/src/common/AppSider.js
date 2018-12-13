@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { Layout, Menu, Icon } from 'antd';
 import { withRouter } from 'react-router-dom';
 import PollList from '../poll/PollList';
+import Profile from '../user/profile/Profile';
 import './AppSider.css';
 
 const { Content, Sider } = Layout;
@@ -42,9 +43,7 @@ class AppSider extends Component {
         switch(this.state.menuIndex) {
             case "11":
                 contentBody = (
-                    <div>
-                        <h1>Profile</h1>
-                    </div>
+                    <Profile isAuthenticated={this.props.isAuthenticated} currentUser={this.props.currentUser} {...this.props}/>
                 );
                 break;
             case "45":
