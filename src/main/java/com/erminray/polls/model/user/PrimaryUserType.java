@@ -1,6 +1,6 @@
 package com.erminray.polls.model.user;
 
-public enum UserType {
+public enum PrimaryUserType {
     STUDENT,
     INSTRUCTOR,
     ADMIN

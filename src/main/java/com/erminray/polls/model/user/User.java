@@ -37,7 +37,7 @@ public class User extends DateAudit {
     private Gender gender;
 
     @Enumerated(EnumType.STRING)
-    protected UserType userType;
+    protected PrimaryUserType primaryUserType;
 
     @NotBlank
     @Size(max = 15)
@@ -141,11 +141,11 @@ public class User extends DateAudit {
         this.roles = roles;
     }
 
-    public UserType getUserType() {
-        return userType;
+    public PrimaryUserType getPrimaryUserType() {
+        return primaryUserType;
     }
 
-    public void setUserType(UserType userType) {
-        this.userType = userType;
+    public void setPrimaryUserType(PrimaryUserType primaryUserType) {
+        this.primaryUserType = primaryUserType;
     }
 }

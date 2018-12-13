@@ -6,7 +6,7 @@ import com.erminray.polls.repository.old.UserRepository;
 import com.erminray.polls.repository.user.AdminRepository;
 import com.erminray.polls.repository.user.InstructorRepository;
 import com.erminray.polls.repository.user.StudentRepository;
-import com.erminray.polls.model.user.UserType;
+import com.erminray.polls.model.user.PrimaryUserType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -67,11 +67,11 @@ public class UserService {
         }
 
         Pageable pageable = PageRequest.of(page, size, sortDirection, sortBy);
-        List<UserType> userTypes = new ArrayList<>();
+        List<PrimaryUserType> primaryUserTypes = new ArrayList<>();
         for(String rawType : userTypesParam) {
             try{
-                UserType userType = UserType.valueOf(rawType.toUpperCase());
-                userTypes.add(userType);
+                PrimaryUserType primaryUserType = PrimaryUserType.valueOf(rawType.toUpperCase());
+                primaryUserTypes.add(primaryUserType);
             } catch (Exception e) {
                 logger.error("Error converting user type to enum: " + e.getMessage());
             }
@@ -79,10 +79,10 @@ public class UserService {
 
         Page<User> users;
         if(usernamesParam.length == 0) {
-            users = userRepository.findByUserTypeIn(userTypes, pageable);
+            users = userRepository.findByPrimaryUserTypeIn(primaryUserTypes, pageable);
         } else {
             List<String> usernames = new ArrayList<>(Arrays.asList(usernamesParam));
-            users = userRepository.findByUsernameInAndUserTypeIn(usernames, userTypes, pageable);
+            users = userRepository.findByUsernameInAndPrimaryUserTypeIn(usernames, primaryUserTypes, pageable);
         }
 
 

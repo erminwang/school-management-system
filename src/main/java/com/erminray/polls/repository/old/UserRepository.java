@@ -1,9 +1,8 @@
 package com.erminray.polls.repository.old;
 
 import com.erminray.polls.model.user.Gender;
-import com.erminray.polls.model.user.Student;
 import com.erminray.polls.model.user.User;
-import com.erminray.polls.model.user.UserType;
+import com.erminray.polls.model.user.PrimaryUserType;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -27,7 +26,7 @@ public interface UserRepository extends JpaRepository<User, Long> {
 
     List<User> findByGender(Gender gender);
 
-    Page<User> findByUserTypeIn(List<UserType> userTypes, Pageable pageable);
+    Page<User> findByPrimaryUserTypeIn(List<PrimaryUserType> primaryUserTypes, Pageable pageable);
 
-    Page<User> findByUsernameInAndUserTypeIn(List<String> usernames, List<UserType> userTypes, Pageable pageable);
+    Page<User> findByUsernameInAndPrimaryUserTypeIn(List<String> usernames, List<PrimaryUserType> primaryUserTypes, Pageable pageable);
 }

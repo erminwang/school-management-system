@@ -16,7 +16,7 @@ public class Administrator extends User {
 
     public Administrator(String firstName, String lastName, String gender, String username, String email, String password, String typeAdmin) {
         super(firstName, lastName, gender, username, email, password);
-        this.userType = UserType.ADMIN;
+        this.primaryUserType = PrimaryUserType.ADMIN;
         this.secondaryUserType = SecondaryUserType.NOT_ASSIGNED;
         this.typeAdmin = typeAdmin;
     }

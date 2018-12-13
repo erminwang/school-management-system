@@ -15,13 +15,13 @@ public class UserProfile {
     private Instant joinedAt;
     private Instant updatedAt;
     private Set<Role> roles;
-    private UserType userType;
+    private PrimaryUserType primaryUserType;
     private SecondaryUserType secondaryUserType;
     private Long pollCount;
     private Long voteCount;
 
     public UserProfile(Long id, String username, String firstName, String lastName, String email, Gender gender,
-                       Instant joinedAt, Instant updatedAt, Set<Role> roles, UserType userType, Long pollCount, Long voteCount) {
+                       Instant joinedAt, Instant updatedAt, Set<Role> roles, PrimaryUserType primaryUserType, Long pollCount, Long voteCount) {
         this.id = id;
         this.username = username;
         this.firstName = firstName;
@@ -31,7 +31,7 @@ public class UserProfile {
         this.joinedAt = joinedAt;
         this.updatedAt = updatedAt;
         this.roles = roles;
-        this.userType = userType;
+        this.primaryUserType = primaryUserType;
         this.pollCount = pollCount;
         this.voteCount = voteCount;
     }
@@ -46,7 +46,7 @@ public class UserProfile {
         this.joinedAt = user.getCreatedAt();
         this.updatedAt = user.getUpdatedAt();
         this.roles = user.getRoles();
-        this.userType = user.getUserType();
+        this.primaryUserType = user.getPrimaryUserType();
         this.pollCount = pollCount;
         if(user.getClass() == Instructor.class) {
             this.secondaryUserType = ((Instructor) user).getSecondaryUserType();
@@ -144,12 +144,12 @@ public class UserProfile {
         this.roles = roles;
     }
 
-    public UserType getUserType() {
-        return userType;
+    public PrimaryUserType getPrimaryUserType() {
+        return primaryUserType;
     }
 
-    public void setUserType(UserType userType) {
-        this.userType = userType;
+    public void setPrimaryUserType(PrimaryUserType primaryUserType) {
+        this.primaryUserType = primaryUserType;
     }
 
     public SecondaryUserType getSecondaryUserType() {
