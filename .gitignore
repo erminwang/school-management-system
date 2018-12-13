@@ -23,3 +23,6 @@
 /dist/
 /nbdist/
 /.nb-gradle/
+
+### Personal ###
+/src/main/java/com/erminray/polls/controller/TestController.java
