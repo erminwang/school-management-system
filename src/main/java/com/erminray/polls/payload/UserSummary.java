@@ -1,16 +1,30 @@
 package com.erminray.polls.payload;
 
+import com.erminray.polls.model.user.PrimaryUserType;
+import com.erminray.polls.model.user.SecondaryUserType;
+import com.erminray.polls.security.UserPrincipal;
+
 public class UserSummary {
     private Long id;
     private String username;
     private String name;
-    private String userType;
+    private PrimaryUserType primaryUserType;
+    private SecondaryUserType secondaryUserType;
 
-    public UserSummary(Long id, String username, String name, String userType) {
+    public UserSummary(Long id, String username, String name, PrimaryUserType primaryUserType, SecondaryUserType secondaryUserType) {
         this.id = id;
         this.username = username;
         this.name = name;
-        this.userType = userType;
+        this.primaryUserType = primaryUserType;
+        this.secondaryUserType = secondaryUserType;
+    }
+
+    public UserSummary(UserPrincipal userPrincipal) {
+        this.id = userPrincipal.getId();
+        this.username = userPrincipal.getUsername();
+        this.name = userPrincipal.getFirstName() + userPrincipal.getLastName();
+        this.primaryUserType = userPrincipal.getPrimaryUserType();
+        this.secondaryUserType = userPrincipal.getSecondaryUserType();
     }
 
     public Long getId() {
@@ -37,11 +51,19 @@ public class UserSummary {
         this.name = name;
     }
 
-    public String getUserType() {
-        return userType;
+    public PrimaryUserType getPrimaryUserType() {
+        return primaryUserType;
     }
 
-    public void setUserType(String userType) {
-        this.userType = userType;
+    public void setPrimaryUserType(PrimaryUserType primaryUserType) {
+        this.primaryUserType = primaryUserType;
+    }
+
+    public SecondaryUserType getSecondaryUserType() {
+        return secondaryUserType;
+    }
+
+    public void setSecondaryUserType(SecondaryUserType secondaryUserType) {
+        this.secondaryUserType = secondaryUserType;
     }
 }

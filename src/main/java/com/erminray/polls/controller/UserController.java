@@ -43,19 +43,7 @@ public class UserController {
     @GetMapping("/user/me")
     @PreAuthorize("hasRole('USER')")
     public UserSummary getCurrentUser(@CurrentUser UserPrincipal currentUser) {
-        String userType = "";
-        for(GrantedAuthority authority : currentUser.getAuthorities()) {
-            if(authority.getAuthority().equals(RoleName.ROLE_ADMIN.toString())) {
-                userType = "ADMIN";
-                break;
-            } else if(authority.getAuthority().equals(RoleName.ROLE_INSTRUCTOR.toString())) {
-                userType = "INSTRUCTOR";
-                break;
-            } else {
-                userType = "STUDENT";
-            }
-        }
-        UserSummary userSummary = new UserSummary(currentUser.getId(), currentUser.getUsername(), currentUser.getFirstName() + " " + currentUser.getLastName(), userType);
+        UserSummary userSummary = new UserSummary(currentUser);
         return userSummary;
     }
 

@@ -1,7 +1,6 @@
 package com.erminray.polls.security;
 
-import com.erminray.polls.model.user.User;
-import com.erminray.polls.model.user.Gender;
+import com.erminray.polls.model.user.*;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -23,6 +22,10 @@ public class UserPrincipal implements UserDetails {
 
     private String username;
 
+    private PrimaryUserType primaryUserType;
+
+    private SecondaryUserType secondaryUserType;
+
     @JsonIgnore
     private String email;
 
@@ -31,7 +34,8 @@ public class UserPrincipal implements UserDetails {
 
     private Collection<? extends GrantedAuthority> authorities;
 
-    public UserPrincipal(Long id, String firstName, String lastName, Gender gender, String username, String email,
+    public UserPrincipal(Long id, String firstName, String lastName, Gender gender, String username,
+                         PrimaryUserType primaryUserType, SecondaryUserType secondaryUserType, String email,
                          String password, Collection<? extends GrantedAuthority> authorities) {
         this.id = id;
         this.firstName = firstName;
@@ -39,6 +43,8 @@ public class UserPrincipal implements UserDetails {
         this.gender = gender;
         this.username = username;
         this.email = email;
+        this.primaryUserType = primaryUserType;
+        this.secondaryUserType = secondaryUserType;
         this.password = password;
         this.authorities = authorities;
     }
@@ -48,12 +54,24 @@ public class UserPrincipal implements UserDetails {
             new SimpleGrantedAuthority(role.getName().name())
         ).collect(Collectors.toList());
 
+        SecondaryUserType secondaryUserType;
+
+        if(user.getClass() == Instructor.class) {
+            secondaryUserType = ((Instructor) user).getSecondaryUserType();
+        } else if (user.getClass() == Administrator.class) {
+            secondaryUserType = ((Administrator) user).getSecondaryUserType();
+        } else {
+            secondaryUserType = null;
+        }
+
         return new UserPrincipal(
             user.getId(),
             user.getFirstName(),
             user.getLastName(),
             user.getGender(),
             user.getUsername(),
+            user.getPrimaryUserType(),
+            secondaryUserType,
             user.getEmail(),
             user.getPassword(),
             authorities
@@ -78,6 +96,14 @@ public class UserPrincipal implements UserDetails {
 
     public String getEmail() {
         return email;
+    }
+
+    public PrimaryUserType getPrimaryUserType() {
+        return primaryUserType;
+    }
+
+    public SecondaryUserType getSecondaryUserType() {
+        return secondaryUserType;
     }
 
     @Override
